@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jco="http://yanzx-dev.cn/develop/schema/jco"
+       xmlns:bean="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://yanzx-dev.cn/develop/schema/jco http://yanzx-dev.cn/develop/schema/jco/sapjco.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+>
+
+    <bean:annotation-config />
+
+    <bean id="virtualCFrameworkRegistrar" class="org.yanzx.core.registrar.VirtualCFrameworkRegistrar" />
+
+    <bean:component-scan base-package="org.yanzx.template.sap.server.bootstrap" />
+
+    <jco:initialize-task class="org.yanzx.core.extend.sap.jco.queue.task.optional.JCoServerStartTask" />
+
+    <jco:component-scan base-package="org.yanzx.template.sap.callback" />
+
+</beans>

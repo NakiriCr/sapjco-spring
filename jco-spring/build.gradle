@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+group 'org.yanzx'
+version '1.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-parameters"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/extra', 'src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+configurations {
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+
+dependencies {
+    compileOnly fileTree (dir:'libs',include:['*.jar'])
+
+    compileOnly group: 'org.springframework', name: 'spring-context', version: '4.3.3.RELEASE'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly  group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+}
