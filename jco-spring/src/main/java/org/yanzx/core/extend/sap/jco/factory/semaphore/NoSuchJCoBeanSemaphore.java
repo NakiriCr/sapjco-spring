@@ -1,15 +1,11 @@
 package org.yanzx.core.extend.sap.jco.factory.semaphore;
 
-import org.springframework.beans.BeansException;
-import org.springframework.util.ClassUtils;
-
 /**
- * Description:
+ *  No such bean semaphore
  *
  * @author VirtualCry
- * @date 2018/12/28 12:50
  */
-public class NoSuchJCoBeanSemaphore extends BeansException {
+public class NoSuchJCoBeanSemaphore extends RuntimeException {
 
     private String beanName;
 
@@ -51,7 +47,7 @@ public class NoSuchJCoBeanSemaphore extends BeansException {
      * @param message detailed message describing the problem
      */
     public NoSuchJCoBeanSemaphore(Class<?> type, String message) {
-        super("No qualifying bean of type [" + ClassUtils.getQualifiedName(type) + "] is defined: " + message);
+        super("No qualifying bean of type [" + type.getName() + "] is defined: " + message);
         this.beanType = type;
     }
 
@@ -72,8 +68,7 @@ public class NoSuchJCoBeanSemaphore extends BeansException {
 
     /**
      * Return the number of beans found when only one matching bean was expected.
-     * For a regular NoSuchBeanDefinitionException, this will always be 0.
-     * @see NoUniqueBeanDefinitionException
+     * @see NoUniqueJCoBeanSemaphore
      */
     public int getNumberOfBeansFound() {
         return 0;

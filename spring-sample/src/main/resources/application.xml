@@ -9,12 +9,8 @@
 
     <bean:annotation-config />
 
-    <bean id="virtualCFrameworkRegistrar" class="org.yanzx.core.registrar.VirtualCFrameworkRegistrar" />
-
     <bean:component-scan base-package="org.yanzx.template.sap.server.bootstrap" />
 
-    <jco:initialize-task class="org.yanzx.core.extend.sap.jco.queue.task.optional.JCoServerStartTask" />
-
-    <jco:component-scan base-package="org.yanzx.template.sap.callback" />
+    <jco:component-scan base-package="org.yanzx.template.sap" />
 
 </beans>

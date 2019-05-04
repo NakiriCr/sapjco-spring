@@ -1,11 +1,9 @@
 package org.yanzx.template.sap.server.bootstrap.config;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.yanzx.core.common.security.cipher.AESCert;
-import org.yanzx.core.extend.sap.jco.beans.JCoServerConfig;
+import org.yanzx.core.extend.sap.jco.beans.JCoSettings;
 
 /**
  * Description:
@@ -16,13 +14,9 @@ import org.yanzx.core.extend.sap.jco.beans.JCoServerConfig;
 @Configuration
 public class JCoConfiguration {
 
-    @Component
+    @Bean
     @ConfigurationProperties(prefix = "jco-server")
-    public static class SpringJCoServerConfig extends JCoServerConfig implements InitializingBean {
-        @Override
-        public void afterPropertiesSet() {
-            if ("".equals(getPassword()))
-                setPassword(AESCert.decrypt(getCipher(), getCipherVector())); /* if password isn't set, use cipher to decrypt.  */
-        }
+    public JCoSettings jCoSettings() {
+        return new JCoSettings();
     }
 }

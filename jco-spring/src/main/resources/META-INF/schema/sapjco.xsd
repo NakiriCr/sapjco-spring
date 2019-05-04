@@ -9,8 +9,7 @@
         <xsd:annotation>
             <xsd:documentation><![CDATA[
     Scans the classpath for annotated components that will be auto-registered as
-	JCo beans. By default, the Spring-provided @JCoBean, @JCoFunctionHandler, @JCoErrorListener,
-	@JCoExceptionListener, @JCoStateChangedListener will be detected.
+	JCo beans. By default, the Spring-provided @JCoComponent, @JCoFunctionHandler, @JCoListener will be detected.
             ]]></xsd:documentation>
             <xsd:appinfo>
                 <tool:annotation>
@@ -19,27 +18,15 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:attribute name="base-package" type="xsd:string" use="required">
+            <xsd:attribute name="base-package" type="xsd:string"
+                           use="required">
                 <xsd:annotation>
-                    <xsd:documentation><![CDATA[ The scan package. ]]></xsd:documentation>
+                    <xsd:documentation><![CDATA[
+	The comma/semicolon/space/tab/linefeed-separated list of packages to scan for annotated components.
+					]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
-        </xsd:complexType>
-    </xsd:element>
 
-    <xsd:element name="initialize-task">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[ Do something after spring context refreshed. ]]></xsd:documentation>
-            <xsd:appinfo>
-                <tool:annotation><tool:exports /></tool:annotation>
-            </xsd:appinfo>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:attribute name="class" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[ Reference task class that must be implements [JCoContextInitializeTask]. ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 

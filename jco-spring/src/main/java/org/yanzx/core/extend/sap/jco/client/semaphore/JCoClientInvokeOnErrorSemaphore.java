@@ -1,10 +1,9 @@
 package org.yanzx.core.extend.sap.jco.client.semaphore;
 
 /**
- * Description:
+ * Client invoke on error semaphore
  *
  * @author VirtualCry
- * @date 2018/12/22 12:58
  */
 public class JCoClientInvokeOnErrorSemaphore extends RuntimeException {
 

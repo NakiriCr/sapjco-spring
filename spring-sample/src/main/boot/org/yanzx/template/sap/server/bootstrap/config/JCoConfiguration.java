@@ -1,16 +1,12 @@
 package org.yanzx.template.sap.server.bootstrap.config;
 
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-import org.yanzx.core.common.security.cipher.AESCert;
-import org.yanzx.core.extend.sap.jco.beans.JCoServerConfig;
+import org.yanzx.core.extend.sap.jco.beans.JCoSettings;
 
-import javax.annotation.Resource;
-
-import static org.yanzx.core.spring.beans.config.PropertyUtils.autowirePropertyBean;
+import static org.yanzx.template.sap.server.bootstrap.config.util.PropertyUtils.autowirePropertyBean;
 
 /**
  * Description:
@@ -22,15 +18,10 @@ import static org.yanzx.core.spring.beans.config.PropertyUtils.autowirePropertyB
 @PropertySource(value = "classpath:sapjco.properties")
 public class JCoConfiguration {
 
-    @Component
-    static class SpringJCoServerConfig extends JCoServerConfig implements InitializingBean {
-        @Resource
-        private Environment _env;
-        @Override
-        public void afterPropertiesSet() throws Exception {
-            autowirePropertyBean(_env, "jco-server", this);    /* 自动装配属性. */
-            if ("".equals(getPassword()))
-                setPassword(AESCert.decrypt(getCipher(), getCipherVector())); /* if password isn't set, use cipher to decrypt.  */
-        }
+    @Bean
+    public JCoSettings jCoSettings(Environment environment) {
+        JCoSettings settings = new JCoSettings();
+        autowirePropertyBean(environment, "jco-server", settings);
+        return settings;
     }
 }

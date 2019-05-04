@@ -1,15 +1,12 @@
 package org.yanzx.core.extend.sap.jco.factory.semaphore;
 
-import org.springframework.util.StringUtils;
-
 import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Description:
+ * No unique bean semaphore
  *
  * @author VirtualCry
- * @date 2018/12/28 10:19
  */
 public class NoUniqueJCoBeanSemaphore extends NoSuchJCoBeanSemaphore {
 
@@ -36,7 +33,7 @@ public class NoUniqueJCoBeanSemaphore extends NoSuchJCoBeanSemaphore {
      */
     public NoUniqueJCoBeanSemaphore(Class<?> type, Collection<String> beanNamesFound) {
         this(type, beanNamesFound.size(), "expected single matching bean but found " + beanNamesFound.size() + ": " +
-                StringUtils.collectionToCommaDelimitedString(beanNamesFound));
+                String.join(",", beanNamesFound));
         this.beanNamesFound = beanNamesFound;
     }
 

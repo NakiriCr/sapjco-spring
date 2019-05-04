@@ -1,14 +1,11 @@
 package org.yanzx.core.extend.sap.jco.factory.semaphore;
 
-import org.springframework.beans.BeansException;
-
 /**
- * Description:
+ * Bean type error semaphore
  *
  * @author VirtualCry
- * @date 2018/12/28 13:44
  */
-public class JCoBeanNotOfRequiredTypeSemaphore extends BeansException {
+public class JCoBeanNotOfRequiredTypeSemaphore extends RuntimeException {
 
     /** The name of the instance that was of the wrong type */
     private String beanName;

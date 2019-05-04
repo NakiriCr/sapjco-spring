@@ -8,7 +8,7 @@ import com.sap.conn.jco.server.JCoServerContext;
 import com.sap.conn.jco.server.JCoServerFunctionHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.yanzx.core.extend.sap.jco.stereotype.JCoFunctionHandler;
+import org.yanzx.core.extend.sap.spring.annotation.JCoFunctionHandler;
 
 import java.util.HashMap;
 import java.util.Map;

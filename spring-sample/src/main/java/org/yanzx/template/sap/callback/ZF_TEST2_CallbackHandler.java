@@ -8,11 +8,7 @@ import com.sap.conn.jco.server.JCoServerContext;
 import com.sap.conn.jco.server.JCoServerFunctionHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.yanzx.core.extend.sap.jco.stereotype.JCoFunctionHandler;
-import org.yanzx.util.JCoDataUtils;
-
-import java.util.List;
-import java.util.Map;
+import org.yanzx.core.extend.sap.spring.annotation.JCoFunctionHandler;
 
 /**
  * Description:
@@ -33,7 +29,7 @@ public class ZF_TEST2_CallbackHandler implements JCoServerFunctionHandler {
         /* SAP对象 -  */
         JCoTable _test = _function.getTableParameterList().getTable("IT_EKPO");
         /* Transfer */
-        List<Map<String, Object>> _test2 = JCoDataUtils.readJCoTable(_test);
+//        List<Map<String, Object>> _test2 = JCoDataUtils.readJCoTable(_test);
 
         _logger.info("----------------------------- 结束 接收SAP主动推送数据 -------------------------------");
     }

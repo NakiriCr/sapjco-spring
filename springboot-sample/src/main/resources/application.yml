@@ -8,5 +8,4 @@ server:
 
 logging:
   level:
-    org.yanzx.core.extend.sap.jco.factory: DEBUG
-    org.yanzx.core.extend.sap.jco.server: DEBUG
+    org.yanzx.core.extend.sap.spring.beans: INFO
