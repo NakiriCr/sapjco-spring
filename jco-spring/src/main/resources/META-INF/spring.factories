@@ -1,2 +1,0 @@
-org.springframework.context.ApplicationContextInitializer = \
-  org.yanzx.core.extend.sap.spring.context.listener.JCoApplicationContextInitializer

@@ -1,5 +1,0 @@
-rootProject.name = 'vc-exrend-sap'
-include 'jco-spring'
-include 'spring-sample'
-include 'springboot-sample'
-
