@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group 'cn.gitlab.virtualcry'
-version '3.0.0-SNAPSHOT'
+group 'cn.yanzx-dev.gitlab'
+version '3.0.0.BUILD-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -70,7 +70,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'cn.yanzx-dev.gitlab'
             artifactId = 'jco-spring'
-            version = '3.0.0.RELEASE'
+            version = '3.0.0.BUILD-SNAPSHOT'
             from components.java
             artifact sourcesJar
             artifact javadocJar
@@ -107,7 +107,9 @@ publishing {
     // repositories to publish
     repositories {
         maven {
-            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             credentials {
                 username sonatypeUsername
                 password sonatypePassword
