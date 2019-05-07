@@ -16,27 +16,27 @@ public class JCoSettings implements Serializable {
 
     /* =============================== Start Connect Config. ============================ */
 
-    // 服务器地址
+    // server address
     private String ashost           = "127.0.0.1";
 
-    // 系统编号
+    // system number
     private String sysnr            = "00";
 
-    // SAP集团
+    // system environment
     private String client           = "800";
 
-    // 用户名
+    // user
     private String user             = "";
-    // 密码
+    // password
     private String password         = "";
 
-    // 语音
+    // language
     private String language         = "ZH";
 
-    // 最大连接数
+    // max connections
     private String poolCapacity     = "20";
 
-    // 最大连接线程
+    // max connection threads
     private String peakLimit        = "10";
 
     /* ================================ End Connect Config. ============================= */
@@ -44,13 +44,13 @@ public class JCoSettings implements Serializable {
 
     /* ================================ Start Server Config. ============================ */
 
-    // 网关地址
+    // gateway host
     private String gatewayHost      = "127.0.0.1";
 
-    // TCP服务sapgw是固定的，后面的00就是SAP实例系统编号，也可直接是端口号（端口号可以在etc/server文件中找sapgw00所对应的端口号）
+    // gateway service
     private String gatewayService   = "sapgw00";
 
-    // 这里的程序ID来自于SM59中设置的Program ID，必须相同
+    // must same with SM59's programId
     private String programId        = "JAVA_JCO";
 
     private String connectionCount  = "20";

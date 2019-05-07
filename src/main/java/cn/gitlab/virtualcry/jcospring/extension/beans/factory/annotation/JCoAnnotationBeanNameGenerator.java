@@ -16,10 +16,6 @@ import java.util.Set;
  * themselves annotated with
  * {@link cn.gitlab.virtualcry.jcospring.extension.annotation.JCoComponent @JCoComponent}.
  *
- * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
- * JSR-330's {@link javax.inject.Named} annotations, if available. Note that
- * Spring component annotations always override such standard annotations.
- *
  * <p>If the annotation's value doesn't indicate a bean name, an appropriate
  * name will be built based on the short name of the class (with the first
  * letter lower-cased). For example:
@@ -28,7 +24,6 @@ import java.util.Set;
  * @see cn.gitlab.virtualcry.jcospring.extension.annotation.JCoComponent#value()
  * @see cn.gitlab.virtualcry.jcospring.extension.annotation.JCoFunctionHandler#value()
  * @see cn.gitlab.virtualcry.jcospring.extension.annotation.JCoListener#value()
- * @see javax.inject.Named#value()
  */
 public class JCoAnnotationBeanNameGenerator extends AnnotationBeanNameGenerator {
 

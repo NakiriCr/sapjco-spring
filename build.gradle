@@ -1,7 +1,9 @@
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 group 'cn.gitlab.virtualcry'
-version '1.0.0-SNAPSHOT'
+version '3.0.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -18,6 +20,7 @@ tasks.withType(JavaCompile) {
 }
 
 sourceSets {
+
     main {
         java {
             srcDirs = ['src/main/java']
@@ -43,4 +46,76 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'cn.yanzx-dev.gitlab'
+            artifactId = 'jco-spring'
+            version = '3.0.0.RELEASE'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                // artifact name
+                name = 'jco-spring'
+                // artifact description
+                description = 'jco with spring'
+                // artifact homepage
+                url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
+                // licenses
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                // developers info
+                developers {
+                    developer {
+                        name = 'VirtualCry'
+                        email = '172519267@qq.com'
+                    }
+                }
+                // scm
+                scm {
+                    url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
+                    connection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring.git'
+                    developerConnection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring.git'
+                }
+            }
+        }
+    }
+    // repositories to publish
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }

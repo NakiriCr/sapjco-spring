@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * JCo destination & server data provider
+ * JCo destination and server data provider
  *
  * @author VirtualCry
  */
@@ -110,7 +110,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
     }
 
     /**
-     * Register settings in destination & server for JCo server
+     * Register settings in destination and server for JCo server
      * @param settings connection settings
      * @see StandaloneServerFactory#getServer(String)
      * @see DefaultDestinationManager#getDestination(String)
@@ -140,7 +140,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
     }
 
     /**
-     * Un register destination & server for JCo server
+     * Un register destination and server for JCo server
      * @param settingsName name
      * @see ServerDataEventListener#deleted(String)
      * @see StandaloneServerFactory#deleted(String)

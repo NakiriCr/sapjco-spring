@@ -20,7 +20,7 @@ import cn.gitlab.virtualcry.jcospring.extension.beans.factory.SpringJCoExtension
 import cn.gitlab.virtualcry.jcospring.extension.util.BeanRegistrar;
 
 /**
- * {@link ApplicationContextInitializer} to register JCo factory & beans
+ * {@link ApplicationContextInitializer} to register JCo factory and beans
  *
  * @author VirtualCry
  */
