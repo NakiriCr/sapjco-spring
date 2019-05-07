@@ -58,7 +58,7 @@ public class JCoClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionSc
         beanDefinitionHolders.forEach(beanDefinitionHolder -> {
             if (logger.isInfoEnabled()) {
                 logger.info("The BeanDefinition[" + beanDefinitionHolder.getBeanDefinition() +
-                        "] of ServiceBean has been registered with name : " + beanDefinitionHolder.getBeanName());
+                        "] of JCoBean has been registered with name : " + beanDefinitionHolder.getBeanName());
             }
         });
 
