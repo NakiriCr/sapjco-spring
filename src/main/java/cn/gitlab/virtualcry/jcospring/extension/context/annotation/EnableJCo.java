@@ -1,5 +1,6 @@
 package cn.gitlab.virtualcry.jcospring.extension.context.annotation;
 
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
@@ -18,6 +19,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @JCoComponentScan
+@Import(EnableJCoRegister.class)
 @Deprecated
 public @interface EnableJCo {
 
