@@ -1,4 +1,4 @@
-package cn.gitlab.virtualcry.jcospring.extension.context.listener;
+package cn.gitlab.virtualcry.jcospring.extension.context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
