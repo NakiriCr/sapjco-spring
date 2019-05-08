@@ -1,4 +1,9 @@
 # JCo-Spring
+
+![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
+![Maven Central](https://img.shields.io/maven-central/v/cn.yanzx-dev.gitlab/jco-spring.svg)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/cn.yanzx-dev.gitlab/jco-spring.svg)
+
 JCo SAP integration with Spring.
 
 ## Introduction
