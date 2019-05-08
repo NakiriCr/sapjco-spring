@@ -70,7 +70,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'cn.yanzx-dev.gitlab'
             artifactId = 'jco-spring'
-            version = '3.0.0.BUILD-SNAPSHOT'
+            version = '3.0.4-SNAPSHOT'
             from components.java
             artifact sourcesJar
             artifact javadocJar
@@ -78,7 +78,7 @@ publishing {
                 // artifact name
                 name = 'JCo Spring'
                 // artifact description
-                description = 'JCo integration with Spring'
+                description = 'JCo SAP integration with Spring'
                 // artifact homepage
                 url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
                 // licenses
