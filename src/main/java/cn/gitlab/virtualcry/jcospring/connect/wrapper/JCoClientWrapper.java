@@ -71,7 +71,7 @@ public class JCoClientWrapper implements JCoClient, AutoCloseable {
 
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         release();
     }
 }
