@@ -20,7 +20,6 @@ tasks.withType(JavaCompile) {
 }
 
 sourceSets {
-
     main {
         java {
             srcDirs = ['src/main/java']
@@ -39,10 +38,11 @@ configurations {
 }
 
 dependencies {
-    compileOnly fileTree (dir:'libs',include:['*.jar'])
+    compile fileTree (dir:'libs',include:['*.jar'])
 
-    compileOnly group: 'com.sap.jco', name: 'sapjco', version: '3.0.14'
-    compileOnly group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+    compile group: 'com.sap.jco', name: 'sapjco', version: '3.0.14'
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
@@ -76,9 +76,9 @@ publishing {
             artifact javadocJar
             pom {
                 // artifact name
-                name = 'jco-spring'
+                name = 'JCo Spring'
                 // artifact description
-                description = 'jco with spring'
+                description = 'JCo integration with Spring'
                 // artifact homepage
                 url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
                 // licenses
@@ -120,4 +120,12 @@ publishing {
 
 signing {
     sign publishing.publications.mavenJava
+}
+
+jar {
+    manifest {
+        attributes 'Built-By': 'VirtualCry'
+        attributes 'Created-By': 'Gradle-' + gradle.getGradleVersion()
+        attributes 'Build-Jdk': java.getTargetCompatibility()
+    }
 }

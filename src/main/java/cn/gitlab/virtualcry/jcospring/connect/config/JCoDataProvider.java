@@ -41,7 +41,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
 
 
     @Override
-    public Properties getDestinationProperties(String destinationName) throws DataProviderException {
+    public Properties getDestinationProperties(String destinationName) {
 
         return Stream.concat(clientSettingsProviders.entrySet().stream(), serverSettingsProviders.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
