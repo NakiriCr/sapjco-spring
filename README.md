@@ -1,13 +1,15 @@
 # JCo-Spring
 
-![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
+
+![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?color=green)
 ![Maven Central](https://img.shields.io/maven-central/v/cn.yanzx-dev.gitlab/jco-spring.svg)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/snapshots/https/oss.sonatype.org/cn.yanzx-dev.gitlab/jco-spring.svg)
 
 JCo SAP integration with Spring.
 
 ## Introduction
-It can help you establishes an **`RFC`** connection between the **`SAP`** system and the **`web`** application when the Spring context has been refreshed, and **registry event listeners** and **SAP handlers flexibly**.
+JCo-Spring help you use SAP Java Connector easier. Familiarize and master the `JCOSAP` middleware faster and better. It provides some simple API to start `RFC server`, 
+add listeners, add function handlers, and create `RFC client` to invoke sap function.
 
 
 ## How to Use
