@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group 'cn.yanzx-dev.gitlab'
-version '3.0.0.BUILD-SNAPSHOT'
+version '3.0.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
