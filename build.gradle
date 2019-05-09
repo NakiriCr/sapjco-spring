@@ -7,7 +7,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "http://maven.mit.edu/nexus/content/repositories/public/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots//" }
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
 }
@@ -38,7 +38,7 @@ configurations {
 dependencies {
     compile fileTree (dir:'libs',include:['*.jar'])
 
-    compileOnly group: 'com.sap.jco', name: 'sapjco', version: '3.0.14'
+    compile group: 'cn.yanzx-dev.gitlab', name: 'com.sap.conn.jco.sapjco', version: '3.0.14-SNAPSHOT'
     compile group: 'com.google.guava', name: 'guava', version: '23.0'
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
 
