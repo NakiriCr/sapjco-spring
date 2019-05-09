@@ -1,11 +1,9 @@
-# Sapjco-Spring
-
+# Sapjco integration with Spring
 
 ![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?color=green)
 ![Maven Central](https://img.shields.io/maven-central/v/cn.yanzx-dev.gitlab/sapjco-spring.svg)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/snapshots/https/oss.sonatype.org/cn.yanzx-dev.gitlab/sapjco-spring.svg)
 
-SAP Java Connector integration with Spring.
 
 ## Introduction
 JCo-Spring help you use SAP Java Connector easier. Familiarize and master the `JCOSAP` middleware faster and better. It provides some simple API to start `RFC server`, 
