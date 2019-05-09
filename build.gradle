@@ -72,7 +72,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'cn.yanzx-dev.gitlab'
             artifactId = 'sapjco-spring'
-            version = '3.0.5-SNAPSHOT'
+            version = artifactVersion
             from components.java
             artifact sourcesJar
             artifact javadocJar
