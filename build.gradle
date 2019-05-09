@@ -69,18 +69,18 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'cn.yanzx-dev.gitlab'
-            artifactId = 'jco-spring'
-            version = '3.0.4-SNAPSHOT'
+            artifactId = 'sapjco-spring'
+            version = '3.0.5-SNAPSHOT'
             from components.java
             artifact sourcesJar
             artifact javadocJar
             pom {
                 // artifact name
-                name = 'JCo Spring'
+                name = 'Sapjco Spring'
                 // artifact description
-                description = 'JCo SAP integration with Spring'
+                description = 'SAP Java Connector integration with Spring'
                 // artifact homepage
-                url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
+                url = 'https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring'
                 // licenses
                 licenses {
                     license {
@@ -97,9 +97,9 @@ publishing {
                 }
                 // scm
                 scm {
-                    url = 'https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring'
-                    connection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring.git'
-                    developerConnection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/jco-spring.git'
+                    url = 'https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring'
+                    connection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring.git'
+                    developerConnection = 'scm:git:https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring.git'
                 }
             }
         }
