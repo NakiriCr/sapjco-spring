@@ -2,8 +2,10 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+apply from: 'artifact.gradle'
+
 group 'cn.yanzx-dev.gitlab'
-version '3.0.0-SNAPSHOT'
+version artifactVersion
 
 sourceCompatibility = 1.8
 
