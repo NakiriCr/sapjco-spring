@@ -67,17 +67,18 @@ public abstract class JCoDataAbstractUtils {
             @SuppressWarnings("unchecked") List<Map<String, Object>> currentParameterList =
                     (List<Map<String, Object>>) currentParameter;
             JCoTable table = field.getTable();
+            table.clear();
             for (int i = 0; i < currentParameterList.size(); i++) {
                 final Map<String, Object> currentParameterRow = currentParameterList.get(i);
                 table.appendRow();
-                table.forEach(_tableField -> setJCoFieldValue(_tableField, currentParameterRow));
+                table.forEach(tableField -> setJCoFieldValue(tableField, currentParameterRow));
             }
         }
         else if (field.getType() == JCoMetaData.TYPE_STRUCTURE) {
             @SuppressWarnings("unchecked") Map<String, Object> currentParameterRow =
                     (Map<String, Object>) currentParameter;
             JCoStructure structure = field.getStructure();
-            structure.forEach(_structureField -> setJCoFieldValue(_structureField, currentParameterRow));
+            structure.forEach(structureField -> setJCoFieldValue(structureField, currentParameterRow));
         }
         else {
             field.setValue(currentParameter);

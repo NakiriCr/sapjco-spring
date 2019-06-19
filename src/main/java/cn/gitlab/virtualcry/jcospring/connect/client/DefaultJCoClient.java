@@ -1,12 +1,14 @@
 package cn.gitlab.virtualcry.jcospring.connect.client;
 
+import cn.gitlab.virtualcry.jcospring.connect.client.handler.FunctionRequestHandler;
+import cn.gitlab.virtualcry.jcospring.connect.client.handler.FunctionResponseHandler;
 import cn.gitlab.virtualcry.jcospring.connect.client.semaphore.JCoClientCreatedOnErrorSemaphore;
 import cn.gitlab.virtualcry.jcospring.connect.client.semaphore.JCoClientInvokeOnErrorSemaphore;
 import cn.gitlab.virtualcry.jcospring.connect.config.JCoDataProvider;
 import cn.gitlab.virtualcry.jcospring.connect.config.JCoSettings;
 import com.sap.conn.jco.*;
-import cn.gitlab.virtualcry.jcospring.connect.client.handler.FunctionRequestHandler;
-import cn.gitlab.virtualcry.jcospring.connect.client.handler.FunctionResponseHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * JCo client
@@ -14,6 +16,7 @@ import cn.gitlab.virtualcry.jcospring.connect.client.handler.FunctionResponseHan
  * @author VirtualCry
  */
 public class DefaultJCoClient implements JCoClient {
+    private static final Log logger = LogFactory.getLog(JCoClient.class);
 
     private final JCoSettings settings;
 
@@ -28,6 +31,14 @@ public class DefaultJCoClient implements JCoClient {
     public void release() {
         JCoDataProvider.getSingleton()
                 .unRegisterClientSettings(settings.getSettingsName());
+
+        if (logger.isDebugEnabled())
+            logger.debug("JCoClient: [" + getSettings().getSettingsName() + "] released.");
+    }
+
+    @Override
+    public void close() {
+        this.release();
     }
 
     @Override

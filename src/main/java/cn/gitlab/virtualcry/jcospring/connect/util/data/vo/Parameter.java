@@ -32,10 +32,10 @@ public class Parameter implements Serializable {
     private int decimals;
 
     @Override
-    public boolean equals(Object _obj) {
-        if (this == _obj) return true;
-        if (_obj == null || getClass() != _obj.getClass()) return false;
-        Parameter parameter = (Parameter) _obj;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Parameter parameter = (Parameter) obj;
         return length == parameter.length &&
                 byteLength == parameter.byteLength &&
                 unicodeByteLength == parameter.unicodeByteLength &&
