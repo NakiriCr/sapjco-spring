@@ -12,7 +12,7 @@ import cn.gitlab.virtualcry.jcospring.connect.client.semaphore.JCoClientInvokeOn
  *
  * @author VirtualCry
  */
-public interface JCoClient {
+public interface JCoClient extends AutoCloseable {
 
     /**
      * release client

@@ -58,6 +58,9 @@ public class DefaultJCoServer implements JCoServer {
         realServer.stop();
         JCoDataProvider.getSingleton()
                 .unRegisterServerSettings(settings.getSettingsName());
+
+        if (logger.isDebugEnabled())
+            logger.debug("JCoServer: [" + getSettings().getSettingsName() + "] released.");
     }
 
     @Override
