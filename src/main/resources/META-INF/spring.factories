@@ -1,2 +1,0 @@
-org.springframework.context.ApplicationContextInitializer = \
-  cn.gitlab.virtualcry.jcospring.extension.context.JCoApplicationContextInitializer
