@@ -1,1 +1,4 @@
-rootProject.name = 'sapjco-spring'
+rootProject.name = 'sapjco-spring-all'
+include 'sapjco-api'
+include 'sapjco-spring'
+
