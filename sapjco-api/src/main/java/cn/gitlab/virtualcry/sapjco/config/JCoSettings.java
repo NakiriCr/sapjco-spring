@@ -3,6 +3,7 @@ package cn.gitlab.virtualcry.sapjco.config;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Sap connection settings
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @Data
 public class JCoSettings implements Serializable {
 
-    private String settingsName;
+    private String settingsName     = UUID.randomUUID().toString();
 
     /* =============================== Start Connect Config. ============================ */
 
@@ -56,4 +57,14 @@ public class JCoSettings implements Serializable {
     private String connectionCount  = "20";
 
     /* ================================= End Server Config. ============================= */
+
+
+    /**
+     * Get unique key for server.
+     * @return unique key for server.
+     */
+    public String getServerUniqueKey() {
+        return this.gatewayHost + " | " + this.gatewayService + " | " + this.programId;
+    }
+
 }
