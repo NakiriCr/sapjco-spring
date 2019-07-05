@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class DefaultJCoBeanFactory implements JCoBeanFactory {
 
-    private final Map<String, Object>       cacheHolder;
+    private final Map<String, Object>                   cacheHolder;
 
     public DefaultJCoBeanFactory() {
         this.cacheHolder = new ConcurrentHashMap<>();

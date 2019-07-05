@@ -8,7 +8,8 @@ import cn.gitlab.virtualcry.sapjco.server.DefaultJCoServer;
 import cn.gitlab.virtualcry.sapjco.server.JCoServer;
 import cn.gitlab.virtualcry.sapjco.server.semaphore.JCoServerCreatedOnErrorSemaphore;
 
-import java.util.UUID;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * RFC connection factory.
@@ -16,6 +17,15 @@ import java.util.UUID;
  * @author VirtualCry
  */
 public class ConnectionFactory {
+
+    private static final Map<String, JCoClient>         clients;
+    private static final Map<String, JCoServer>         servers;
+
+    static {
+        clients = new ConcurrentHashMap<>();
+        servers = new ConcurrentHashMap<>();
+    }
+
 
     /**
      * Create a new {@link JCoClient} using the given {@link JCoSettings}
@@ -26,8 +36,7 @@ public class ConnectionFactory {
         if (settings == null)
             throw new JCoClientCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        settings.setSettingsName(UUID.randomUUID().toString());
-        return new DefaultJCoClient(settings);
+        return clients.computeIfAbsent(settings.getSettingsName(), key -> new DefaultJCoClient(settings));
     }
 
 
@@ -40,8 +49,30 @@ public class ConnectionFactory {
         if (settings == null)
             throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        settings.setSettingsName(UUID.randomUUID().toString());
-        return new DefaultJCoServer(settings);
+        settings.setSettingsName(
+                settings.getServerUniqueKey()
+        );
+        return servers.computeIfAbsent(settings.getSettingsName(), key -> new DefaultJCoServer(settings));
+    }
+
+
+    /**
+     * Release client connection.
+     * @param settings The {@link JCoSettings} to be used to release..
+     */
+    public static void releaseClient(JCoSettings settings) {
+        clients.remove(settings.getSettingsName())
+                .release();
+    }
+
+
+    /**
+     * Release client connection.
+     * @param settings The {@link JCoSettings} to be used to release..
+     */
+    public static void releaseServer(JCoSettings settings) {
+        servers.remove(settings.getSettingsName())
+                .release();
     }
 
 }
