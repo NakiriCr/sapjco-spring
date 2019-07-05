@@ -28,11 +28,11 @@ import static cn.gitlab.virtualcry.sapjco.spring.util.AnnotationUtils.attributes
  *
  * @author VirtualCry
  */
-public class JCoAnnotationBeanPostProcessor implements BeanDefinitionRegistryPostProcessor, PriorityOrdered, EnvironmentAware, ResourceLoaderAware {
+public class JCoAnnotationBeanPostProcessor implements BeanDefinitionRegistryPostProcessor,
+        PriorityOrdered, EnvironmentAware, ResourceLoaderAware {
 
-    private Environment environment;
-
-    private ResourceLoader resourceLoader;
+    private Environment                                 environment;
+    private ResourceLoader                              resourceLoader;
 
 
     @Override
