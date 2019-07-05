@@ -1,7 +1,14 @@
 package cn.gitlab.virtualcry.sapjco.spring.context;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
+import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoErrorListener;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoExceptionListener;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoStateChangedListener;
+import cn.gitlab.virtualcry.sapjco.spring.beans.factory.SpringJCoExtensionFactory;
+import cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation.JCoAnnotationBeanPostProcessor;
+import cn.gitlab.virtualcry.sapjco.spring.util.BeanRegistrar;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -10,44 +17,33 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
-import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
-import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
-import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoErrorListener;
-import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoExceptionListener;
-import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoStateChangedListener;
-import cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation.JCoAnnotationBeanPostProcessor;
-import cn.gitlab.virtualcry.sapjco.spring.beans.factory.SpringJCoExtensionFactory;
-import cn.gitlab.virtualcry.sapjco.spring.util.BeanRegistrar;
 
 /**
  * {@link ApplicationContextInitializer} to register JCo factory and beans
  *
  * @author VirtualCry
  */
+@Slf4j
 public class JCoApplicationContextInitializer
         implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-    private static final Log logger =
-            LogFactory.getLog(JCoApplicationContextInitializer.class);
-
 
     public static final String BEAN_NAME = "cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation."
             + "internalJCoAnnotationBeanPostProcessor";
 
-    public static final String ERROR_LISTENER_BEAN_NAME = "org.yanzx.core.extend.sap.jco.server.listener."
+    public static final String ERROR_LISTENER_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.server.listener."
             + "internalDefaultJCoErrorListener";
 
-    public static final String EXCEPTION_LISTENER_BEAN_NAME = "org.yanzx.core.extend.sap.jco.server.listener."
+    public static final String EXCEPTION_LISTENER_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.server.listener."
             + "internalDefaultJCoExceptionListener";
 
-    public static final String STATE_CHANGED_LISTENER_BEAN_NAME = "org.yanzx.core.extend.sap.jco.server.listener."
+    public static final String STATE_CHANGED_LISTENER_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.server.listener."
             + "internalDefaultJCoStateChangedListener";
 
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
-        if (logger.isInfoEnabled())
-            logger.info("Initializing JCo");
+        if (log.isInfoEnabled())
+            log.info("Initializing SAP Java Connector.");
 
         // register provider
         JCoDataProvider.registerInEnvironment();

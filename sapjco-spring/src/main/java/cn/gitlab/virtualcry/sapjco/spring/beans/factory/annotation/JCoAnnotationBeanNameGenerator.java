@@ -27,7 +27,12 @@ import java.util.Set;
  */
 public class JCoAnnotationBeanNameGenerator extends AnnotationBeanNameGenerator {
 
-    private static final String JCO_BEAN_ANNOTATION_CLASSNAME = "cn.gitlab.virtualcry.sapjco.spring.annotation.JCoComponent";
+    private static final String JCO_BEAN_ANNOTATION_CLASSNAME;
+
+    static {
+        JCO_BEAN_ANNOTATION_CLASSNAME = "cn.gitlab.virtualcry.sapjco.spring.annotation.JCoComponent";
+    }
+
 
     /**
      * Check whether the given annotation is a stereotype that is allowed
@@ -47,4 +52,5 @@ public class JCoAnnotationBeanNameGenerator extends AnnotationBeanNameGenerator 
 
         return (isStereotype && attributes != null && attributes.containsKey("value"));
     }
+
 }

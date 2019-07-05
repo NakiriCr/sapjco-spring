@@ -1,7 +1,10 @@
 package cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import cn.gitlab.virtualcry.sapjco.spring.annotation.JCoComponent;
+import cn.gitlab.virtualcry.sapjco.spring.context.annotation.JCoClassPathBeanDefinitionScanner;
+import cn.gitlab.virtualcry.sapjco.spring.context.annotation.JCoComponentScan;
+import cn.gitlab.virtualcry.sapjco.spring.schema.JCoComponentScanBeanDefinitionParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -12,10 +15,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import cn.gitlab.virtualcry.sapjco.spring.annotation.JCoComponent;
-import cn.gitlab.virtualcry.sapjco.spring.context.annotation.JCoClassPathBeanDefinitionScanner;
-import cn.gitlab.virtualcry.sapjco.spring.context.annotation.JCoComponentScan;
-import cn.gitlab.virtualcry.sapjco.spring.schema.JCoComponentScanBeanDefinitionParser;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,18 +29,13 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * @see JCoClassPathBeanDefinitionScanner#scan(String...)
  * @see JCoComponentScanBeanDefinitionParser
  */
+@Slf4j
 public class JCoComponentScanAnnotationParser {
 
-    private static final Log logger = LogFactory
-            .getLog(JCoComponentScanAnnotationParser.class);
-
-    private Environment environment;
-
-    private ResourceLoader resourceLoader;
-
-    private final BeanNameGenerator beanNameGenerator;
-
-    private final BeanDefinitionRegistry registry;
+    private Environment                                 environment;
+    private ResourceLoader                              resourceLoader;
+    private final BeanNameGenerator                     beanNameGenerator;
+    private final BeanDefinitionRegistry                registry;
 
     public JCoComponentScanAnnotationParser(Environment environment, ResourceLoader resourceLoader,
                                             BeanDefinitionRegistry registry) {
@@ -51,6 +45,7 @@ public class JCoComponentScanAnnotationParser {
         this.beanNameGenerator = resolveBeanNameGenerator(registry);
         this.registry = registry;
     }
+
 
     public Set<BeanDefinitionHolder> parse(Set<String> packagesToScan) {
 
@@ -106,11 +101,11 @@ public class JCoComponentScanAnnotationParser {
 
         if (beanNameGenerator == null) {
 
-            if (logger.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
 
-                logger.debug("BeanNameGenerator bean can't be found in BeanFactory with name ["
+                log.debug("BeanNameGenerator bean can't be found in BeanFactory with name ["
                         + CONFIGURATION_BEAN_NAME_GENERATOR + "]");
-                logger.debug("BeanNameGenerator will be a instance of " +
+                log.debug("BeanNameGenerator will be a instance of " +
                         JCoAnnotationBeanNameGenerator.class.getName() +
                         " , it maybe a potential problem on bean name generation.");
             }
