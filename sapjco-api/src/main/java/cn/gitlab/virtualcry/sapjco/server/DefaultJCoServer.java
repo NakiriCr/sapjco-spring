@@ -2,6 +2,7 @@ package cn.gitlab.virtualcry.sapjco.server;
 
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactory;
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
+import cn.gitlab.virtualcry.sapjco.config.Connections;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.server.handler.DynamicFunctionHandler;
@@ -51,10 +52,10 @@ public class DefaultJCoServer implements JCoServer {
     public void release() {
         originalServer.stop();
         JCoDataProvider.getSingleton()
-                .unRegisterServerSettings(settings.getSettingsName());
+                .unRegisterServerSettings(settings.getUniqueKey(Connections.SERVER));
 
         if (log.isDebugEnabled())
-            log.debug("JCoServer: [" + getSettings().getSettingsName() + "] released.");
+            log.debug("JCoServer: [" + getSettings().getUniqueKey(Connections.SERVER) + "] released.");
     }
 
     @Override
@@ -90,13 +91,13 @@ public class DefaultJCoServer implements JCoServer {
 
         try {
             // get server
-            com.sap.conn.jco.server.JCoServer server = JCoServerFactory.getServer(settings.getSettingsName());
+            com.sap.conn.jco.server.JCoServer server = JCoServerFactory.getServer(settings.getUniqueKey(Connections.SERVER));
 
             // use callback factory
             server.setCallHandlerFactory(new FunctionHandlerFactory());
 
             // register dynamic function
-            registerDynamicSapFunctions(server, settings.getSettingsName(),
+            registerDynamicSapFunctions(server, settings.getUniqueKey(Connections.SERVER),
                     beanFactory.getBeans(DynamicFunctionHandler.class));
 
             // register callback function handlers
@@ -116,7 +117,7 @@ public class DefaultJCoServer implements JCoServer {
             return server;
 
         }catch (JCoException ex) { throw new JCoServerCreatedOnErrorSemaphore(
-                "Unable to create the server: [" + settings.getSettingsName() + "]", ex); }
+                "Unable to create the server: [" + settings.getUniqueKey(Connections.SERVER) + "]", ex); }
     }
 
     private static void registerDynamicSapFunctions(com.sap.conn.jco.server.JCoServer server,

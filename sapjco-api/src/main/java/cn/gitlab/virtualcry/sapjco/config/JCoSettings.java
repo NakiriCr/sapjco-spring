@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class JCoSettings implements Serializable {
 
-    private String settingsName     = UUID.randomUUID().toString();
+    private final String uuid       = UUID.randomUUID().toString();
 
     /* =============================== Start Connect Config. ============================ */
 
@@ -58,13 +58,20 @@ public class JCoSettings implements Serializable {
 
     /* ================================= End Server Config. ============================= */
 
-
     /**
-     * Get unique key for server.
-     * @return unique key for server.
+     * Get unique key.
+     * @param type type
+     * @return key.
      */
-    public String getServerUniqueKey() {
-        return this.gatewayHost + " | " + this.gatewayService + " | " + this.programId;
+    public String getUniqueKey(Connections type) {
+        switch (type) {
+            case CLIENT:
+                return uuid;
+            case SERVER:
+                return this.gatewayHost + " | " + this.gatewayService + " | " + this.programId;
+                default:
+                    return null;
+        }
     }
 
 }
