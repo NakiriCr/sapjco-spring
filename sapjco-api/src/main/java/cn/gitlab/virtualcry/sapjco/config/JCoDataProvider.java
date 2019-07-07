@@ -91,7 +91,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
      * @see DefaultDestinationManager#getDestination(String)
      */
     public void registerClientSettings(JCoSettings settings) {
-        clientSettingsProviders.compute(settings.getSettingsName(), (clientName, clientSettings) -> {
+        clientSettingsProviders.compute(settings.getUniqueKey(Connections.CLIENT), (clientName, clientSettings) -> {
             // exist check
             if (clientSettings != null)
                 throw new JCoClientCreatedOnErrorSemaphore("Destination: [" + clientName + "] has been already registered.");
@@ -108,7 +108,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
      * @see DefaultDestinationManager#getDestination(String)
      */
     public void registerServerSettings(JCoSettings settings) {
-        serverSettingsProviders.compute(settings.getSettingsName(), (serverName, serverSettings) -> {
+        serverSettingsProviders.compute(settings.getUniqueKey(Connections.SERVER), (serverName, serverSettings) -> {
             // exist check
             if (serverSettings != null)
                 throw new JCoServerCreatedOnErrorSemaphore("Server: [" + serverName + "] has been already registered.");
@@ -171,7 +171,7 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
         provider.setProperty(ServerDataProvider.JCO_GWHOST, settings.getGatewayHost());
         provider.setProperty(ServerDataProvider.JCO_GWSERV, settings.getGatewayService());
         provider.setProperty(ServerDataProvider.JCO_PROGID, settings.getProgramId());
-        provider.setProperty(ServerDataProvider.JCO_REP_DEST, settings.getSettingsName());
+        provider.setProperty(ServerDataProvider.JCO_REP_DEST, settings.getUniqueKey(Connections.SERVER));
         provider.setProperty(ServerDataProvider.JCO_CONNECTION_COUNT, settings.getConnectionCount());
 
         return provider;
