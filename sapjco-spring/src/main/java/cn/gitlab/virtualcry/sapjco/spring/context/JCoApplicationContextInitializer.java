@@ -43,7 +43,7 @@ public class JCoApplicationContextInitializer
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         if (log.isInfoEnabled())
-            log.info("Initializing SAP Java Connector.");
+            log.info("Initializing SAP Java Connector");
 
         // register provider
         JCoDataProvider.registerInEnvironment();
