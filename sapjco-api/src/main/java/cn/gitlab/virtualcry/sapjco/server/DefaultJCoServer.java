@@ -2,7 +2,6 @@ package cn.gitlab.virtualcry.sapjco.server;
 
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactory;
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
-import cn.gitlab.virtualcry.sapjco.config.Connections;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.server.handler.DynamicFunctionHandler;
@@ -16,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Map;
 
+import static cn.gitlab.virtualcry.sapjco.config.Connections.SERVER;
 import static com.sap.conn.jco.server.DefaultServerHandlerFactory.FunctionHandlerFactory;
 
 /**
@@ -50,12 +50,11 @@ public class DefaultJCoServer implements JCoServer {
 
     @Override
     public void release() {
-        originalServer.stop();
         JCoDataProvider.getSingleton()
-                .unRegisterServerSettings(settings.getUniqueKey(Connections.SERVER));
+                .unRegisterServerSettings(settings.getUniqueKey(SERVER));
 
         if (log.isDebugEnabled())
-            log.debug("JCoServer: [" + getSettings().getUniqueKey(Connections.SERVER) + "] released.");
+            log.debug("JCoServer: [" + getSettings().getUniqueKey(SERVER) + "] released.");
     }
 
     @Override
@@ -84,20 +83,21 @@ public class DefaultJCoServer implements JCoServer {
         // get bean factory
         JCoBeanFactory beanFactory = JCoBeanFactoryProvider.getSingleton()
                 .getIfAvailable();
-
-        // register server
-        JCoDataProvider.getSingleton()
-                .registerServerSettings(settings);
+        // get properties provider.
+        JCoDataProvider propertiesProvider = JCoDataProvider.getSingleton();
 
         try {
+            // register server properties.
+            propertiesProvider.registerServerSettings(settings);
+
             // get server
-            com.sap.conn.jco.server.JCoServer server = JCoServerFactory.getServer(settings.getUniqueKey(Connections.SERVER));
+            com.sap.conn.jco.server.JCoServer server = JCoServerFactory.getServer(settings.getUniqueKey(SERVER));
 
             // use callback factory
             server.setCallHandlerFactory(new FunctionHandlerFactory());
 
             // register dynamic function
-            registerDynamicSapFunctions(server, settings.getUniqueKey(Connections.SERVER),
+            registerDynamicSapFunctions(server, settings.getUniqueKey(SERVER),
                     beanFactory.getBeans(DynamicFunctionHandler.class));
 
             // register callback function handlers
@@ -116,8 +116,12 @@ public class DefaultJCoServer implements JCoServer {
 
             return server;
 
-        }catch (JCoException ex) { throw new JCoServerCreatedOnErrorSemaphore(
-                "Unable to create the server: [" + settings.getUniqueKey(Connections.SERVER) + "]", ex); }
+        }catch (JCoException ex) {
+            // unregister server properties.
+            propertiesProvider.unRegisterServerSettings(settings.getUniqueKey(SERVER));
+            throw new JCoServerCreatedOnErrorSemaphore(
+                    "Unable to create the server: [" + settings.getUniqueKey(SERVER) + "]", ex);
+        }
     }
 
     private static void registerDynamicSapFunctions(com.sap.conn.jco.server.JCoServer server,

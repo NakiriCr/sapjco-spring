@@ -4,11 +4,12 @@ import cn.gitlab.virtualcry.sapjco.client.handler.FunctionRequestHandler;
 import cn.gitlab.virtualcry.sapjco.client.handler.FunctionResponseHandler;
 import cn.gitlab.virtualcry.sapjco.client.semaphore.JCoClientCreatedOnErrorSemaphore;
 import cn.gitlab.virtualcry.sapjco.client.semaphore.JCoClientInvokeOnErrorSemaphore;
-import cn.gitlab.virtualcry.sapjco.config.Connections;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import com.sap.conn.jco.*;
 import lombok.extern.slf4j.Slf4j;
+
+import static cn.gitlab.virtualcry.sapjco.config.Connections.CLIENT;
 
 /**
  * Default implement of {@link JCoClient}
@@ -29,10 +30,10 @@ public class DefaultJCoClient implements JCoClient {
     @Override
     public void release() {
         JCoDataProvider.getSingleton()
-                .unRegisterClientSettings(this.settings.getUniqueKey(Connections.CLIENT));
+                .unRegisterClientSettings(this.settings.getUniqueKey(CLIENT));
 
         if (log.isDebugEnabled())
-            log.debug("JCoClient: [" + this.settings.getUniqueKey(Connections.CLIENT) + "] released.");
+            log.debug("JCoClient: [" + this.settings.getUniqueKey(CLIENT) + "] released.");
     }
 
     @Override
@@ -49,7 +50,7 @@ public class DefaultJCoClient implements JCoClient {
     public JCoDestination getDestination() {
         try {
             return JCoDestinationManager
-                    .getDestination(this.settings.getUniqueKey(Connections.CLIENT));
+                    .getDestination(this.settings.getUniqueKey(CLIENT));
         }catch (JCoException ex) { throw new JCoClientInvokeOnErrorSemaphore(ex); }
     }
 
@@ -57,7 +58,7 @@ public class DefaultJCoClient implements JCoClient {
     public JCoFunction getFunction(String functionName) {
         try {
             return JCoDestinationManager
-                    .getDestination(this.settings.getUniqueKey(Connections.CLIENT))
+                    .getDestination(this.settings.getUniqueKey(CLIENT))
                     .getRepository()
                     .getFunction(functionName);
         }catch (JCoException ex) { throw new JCoClientInvokeOnErrorSemaphore(ex); }
@@ -100,17 +101,22 @@ public class DefaultJCoClient implements JCoClient {
      */
     private static void initJCoConnection(JCoSettings settings) {
         try {
-            // register client
+            // register client properties.
             JCoDataProvider.getSingleton()
                     .registerClientSettings(settings);
 
             // ping test
             JCoDestinationManager
-                    .getDestination(settings.getUniqueKey(Connections.CLIENT))
+                    .getDestination(settings.getUniqueKey(CLIENT))
                     .ping();
 
-        }catch (JCoException ex) { throw new JCoClientCreatedOnErrorSemaphore(
-                "Unable to create the client: [" + settings.getUniqueKey(Connections.CLIENT) + "]", ex); }
+        }catch (JCoException ex) {
+            // unregister client properties.
+            JCoDataProvider.getSingleton()
+                    .unRegisterClientSettings(settings.getUniqueKey(CLIENT));
+            throw new JCoClientCreatedOnErrorSemaphore(
+                    "Unable to create the client: [" + settings.getUniqueKey(CLIENT) + "]", ex);
+        }
     }
 
     static class DefaultRequest extends com.sap.conn.jco.rt.DefaultRequest {
