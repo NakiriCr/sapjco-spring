@@ -1,9 +1,11 @@
 package cn.gitlab.virtualcry.sapjco.config;
 
+import cn.gitlab.virtualcry.sapjco.util.key.KeyGenerator;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Sap connection settings
@@ -12,8 +14,6 @@ import java.util.UUID;
  */
 @Data
 public class JCoSettings implements Serializable {
-
-    private final String uuid       = UUID.randomUUID().toString();
 
     /* =============================== Start Connect Config. ============================ */
 
@@ -58,6 +58,9 @@ public class JCoSettings implements Serializable {
 
     /* ================================= End Server Config. ============================= */
 
+    @Getter(AccessLevel.PRIVATE)
+    private final String defaultKey = KeyGenerator.generateClientKey();
+
     /**
      * Get unique key.
      * @param type type
@@ -66,9 +69,9 @@ public class JCoSettings implements Serializable {
     public String getUniqueKey(Connections type) {
         switch (type) {
             case CLIENT:
-                return uuid;
+                return defaultKey;
             case SERVER:
-                return this.gatewayHost + " | " + this.gatewayService + " | " + this.programId;
+                return KeyGenerator.generateServerKey(this.gatewayHost, this.gatewayService, this.programId);
                 default:
                     return null;
         }
