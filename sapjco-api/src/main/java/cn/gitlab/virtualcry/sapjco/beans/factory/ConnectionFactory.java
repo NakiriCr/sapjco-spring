@@ -9,7 +9,9 @@ import cn.gitlab.virtualcry.sapjco.server.DefaultJCoServer;
 import cn.gitlab.virtualcry.sapjco.server.JCoServer;
 import cn.gitlab.virtualcry.sapjco.server.semaphore.JCoServerCreatedOnErrorSemaphore;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -59,7 +61,7 @@ public class ConnectionFactory {
      * @return All cache {@link JCoClient}s
      */
     public static Map<String, JCoClient> getClients() {
-        return clients;
+        return Collections.unmodifiableMap(clients);
     }
 
 
@@ -71,7 +73,7 @@ public class ConnectionFactory {
      */
     public static JCoServer getOrCreateServer(String serverName, JCoSettings settings) {
         if (serverName == null || "".equals(serverName))
-            throw new JCoClientCreatedOnErrorSemaphore("Could not find server name.");
+            throw new JCoServerCreatedOnErrorSemaphore("Could not find server name.");
         if (settings == null)
             throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
 
@@ -94,7 +96,7 @@ public class ConnectionFactory {
      * @return All cache {@link JCoServer}s
      */
     public static Map<String, JCoServer> getServers() {
-        return servers;
+        return Collections.unmodifiableMap(servers);
     }
 
 
@@ -103,7 +105,8 @@ public class ConnectionFactory {
      * @param clientName The {@literal clientName} to be used to release.
      */
     public static void releaseClient(String clientName) {
-        clients.remove(clientName).release();
+        Optional.ofNullable(clients.remove(clientName))
+                .ifPresent(JCoClient::release);
     }
 
 
@@ -112,8 +115,8 @@ public class ConnectionFactory {
      * @param serverName The {@literal serverName} to be used to release.
      */
     public static void releaseServer(String serverName) {
-        servers.remove(serverName)
-                .release();
+        Optional.ofNullable(servers.remove(serverName))
+                .ifPresent(JCoServer::release);
     }
 
 }
