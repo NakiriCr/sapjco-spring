@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static cn.gitlab.virtualcry.sapjco.config.Connections.SERVER;
+
 /**
  * RFC connection factory.
  *
@@ -30,18 +32,23 @@ public class ConnectionFactory {
 
 
     /**
-     * Get or create a new {@link JCoClient} using the given {@link JCoSettings}
+     * Create a new {@link JCoClient} using the given {@link JCoSettings}
      * @param clientName The {@literal clientName} to be used to cache.
      * @param settings The {@link JCoSettings} to be used.
      * @return A new {@link JCoClient}
      */
-    public static JCoClient getOrCreateClient(String clientName, JCoSettings settings) {
+    public static JCoClient createClient(String clientName, JCoSettings settings) {
         if (clientName == null || "".equals(clientName))
             throw new JCoClientCreatedOnErrorSemaphore("Could not find client name.");
         if (settings == null)
             throw new JCoClientCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        return clients.computeIfAbsent(clientName, key -> new DefaultJCoClient(settings));
+        return clients.compute(clientName, (key, client) -> {
+            if (client != null)
+                throw new JCoClientCreatedOnErrorSemaphore(
+                        "Client: [" + key + "] is existed. Not allow the same client name to create.");
+            return new DefaultJCoClient(settings);
+        });
     }
 
 
@@ -65,18 +72,32 @@ public class ConnectionFactory {
 
 
     /**
-     * Get or create a new {@link JCoServer} using the given {@link JCoSettings}
+     * Create a new {@link JCoServer} using the given {@link JCoSettings}
      * @param serverName The {@literal serverName} to be used to cache.
      * @param settings The {@link JCoSettings} to be used.
      * @return A new {@link JCoServer}
      */
-    public static JCoServer getOrCreateServer(String serverName, JCoSettings settings) {
+    public static JCoServer createServer(String serverName, JCoSettings settings) {
         if (serverName == null || "".equals(serverName))
             throw new JCoServerCreatedOnErrorSemaphore("Could not find server name.");
         if (settings == null)
             throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        return servers.computeIfAbsent(serverName, key -> new DefaultJCoServer(settings));
+        // duplicate check.
+        servers.entrySet().stream()
+                .filter(entry -> settings.getUniqueKey(SERVER).equals(entry.getValue().getSettings().getUniqueKey(SERVER)))
+                .findFirst()
+                .ifPresent(entry -> {
+                    throw new JCoServerCreatedOnErrorSemaphore("Duplicate settings: [" +
+                            serverName + "] with server: [" + entry.getKey() + "]");
+                });
+
+        return servers.compute(serverName, (key, server) -> {
+            if (server != null)
+                throw new JCoServerCreatedOnErrorSemaphore(
+                        "Server: [" + key + "] is existed. Not allow the same server name to create.");
+            return new DefaultJCoServer(settings);
+        });
     }
 
 
@@ -100,6 +121,20 @@ public class ConnectionFactory {
 
 
     /**
+     * Get {@literal serverName} using the given {@literal clientName}
+     * @param settingUniqueKey The {@literal settingUniqueKey} to be used to matching.
+     * @return The {@literal serverName}.
+     */
+    public static String getServerName(String settingUniqueKey) {
+        return servers.entrySet().stream()
+                .filter(entry -> entry.getValue().getSettings().getUniqueKey(SERVER).equals(settingUniqueKey))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    /**
      * Release client connection.
      * @param clientName The {@literal clientName} to be used to release.
      */
@@ -110,11 +145,29 @@ public class ConnectionFactory {
 
 
     /**
-     * Release client connection.
+     * Release clients' connection.
+     */
+    public static void releaseClients() {
+        clients.values().forEach(JCoClient::release);
+        clients.clear();
+    }
+
+
+    /**
+     * Release server connection.
      * @param serverName The {@literal serverName} to be used to release.
      */
     public static void releaseServer(String serverName) {
         Optional.ofNullable(servers.remove(serverName))
                 .ifPresent(JCoServer::release);
+    }
+
+
+    /**
+     * Release servers' connection.
+     */
+    public static void releaseServers() {
+        servers.values().forEach(JCoServer::release);
+        servers.clear();
     }
 }

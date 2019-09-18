@@ -76,5 +76,4 @@ public class JCoSettings implements Serializable {
                     return null;
         }
     }
-
 }

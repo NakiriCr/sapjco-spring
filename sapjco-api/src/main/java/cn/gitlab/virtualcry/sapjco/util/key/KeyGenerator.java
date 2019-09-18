@@ -3,7 +3,7 @@ package cn.gitlab.virtualcry.sapjco.util.key;
 import java.util.UUID;
 
 /**
- * Somethings
+ * JCo settings key generator.
  *
  * @author VirtualCry
  */
