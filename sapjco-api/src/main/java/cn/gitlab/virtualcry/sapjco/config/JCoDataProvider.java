@@ -19,10 +19,10 @@ import java.util.stream.Stream;
  */
 public class JCoDataProvider implements DestinationDataProvider, ServerDataProvider {
 
-    private final Map<String, Properties>               clientSettingsProviders;
-    private final Map<String, Properties>               serverSettingsProviders;
-    private DestinationDataEventListener                destinationDataEventListener;
-    private ServerDataEventListener                     serverDataEventListener;
+    private final Map<String, Properties>       clientSettingsProviders;
+    private final Map<String, Properties>       serverSettingsProviders;
+    private DestinationDataEventListener        destinationDataEventListener;
+    private ServerDataEventListener             serverDataEventListener;
 
     private static class JCoDataProviderInstance {
         private static final JCoDataProvider INSTANCE = new JCoDataProvider();
@@ -176,5 +176,4 @@ public class JCoDataProvider implements DestinationDataProvider, ServerDataProvi
 
         return provider;
     }
-
 }

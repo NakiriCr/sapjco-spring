@@ -55,5 +55,4 @@ public interface JCoClient extends AutoCloseable {
     void invokeSapFunc(String functionName,
                        FunctionRequestHandler requestHandler,
                        FunctionResponseHandler responseHandler);
-
 }

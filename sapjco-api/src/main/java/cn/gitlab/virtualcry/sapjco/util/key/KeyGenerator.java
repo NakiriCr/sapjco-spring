@@ -27,5 +27,4 @@ public class KeyGenerator {
     public static String generateServerKey(String gatewayHost, String gatewayService, String programId) {
         return gatewayHost + " | " + gatewayService + " | " + programId;
     }
-
 }
