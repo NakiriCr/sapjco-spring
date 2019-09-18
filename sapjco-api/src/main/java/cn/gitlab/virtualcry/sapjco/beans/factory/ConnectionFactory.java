@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static cn.gitlab.virtualcry.sapjco.config.Connections.SERVER;
+
 /**
  * RFC connection factory.
  *
@@ -81,6 +83,15 @@ public class ConnectionFactory {
         if (settings == null)
             throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
 
+        // duplicate check.
+        servers.entrySet().stream()
+                .filter(entry -> settings.getUniqueKey(SERVER).equals(entry.getValue().getSettings().getUniqueKey(SERVER)))
+                .findFirst()
+                .ifPresent(entry -> {
+                    throw new JCoServerCreatedOnErrorSemaphore("Duplicate settings: [" +
+                            serverName + "] with server: [" + entry.getKey() + "]");
+                });
+
         return servers.compute(serverName, (key, server) -> {
             if (server != null)
                 throw new JCoServerCreatedOnErrorSemaphore(
@@ -106,6 +117,20 @@ public class ConnectionFactory {
      */
     public static Map<String, JCoServer> getServers() {
         return Collections.unmodifiableMap(servers);
+    }
+
+
+    /**
+     * Get {@literal serverName} using the given {@literal clientName}
+     * @param settingUniqueKey The {@literal settingUniqueKey} to be used to matching.
+     * @return The {@literal serverName}.
+     */
+    public static String getServerName(String settingUniqueKey) {
+        return servers.entrySet().stream()
+                .filter(entry -> entry.getValue().getSettings().getUniqueKey(SERVER).equals(settingUniqueKey))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
     }
 
 
