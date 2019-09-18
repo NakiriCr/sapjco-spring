@@ -3,7 +3,6 @@ package cn.gitlab.virtualcry.sapjco.beans.factory;
 import cn.gitlab.virtualcry.sapjco.client.DefaultJCoClient;
 import cn.gitlab.virtualcry.sapjco.client.JCoClient;
 import cn.gitlab.virtualcry.sapjco.client.semaphore.JCoClientCreatedOnErrorSemaphore;
-import cn.gitlab.virtualcry.sapjco.config.Connections;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.server.DefaultJCoServer;
 import cn.gitlab.virtualcry.sapjco.server.JCoServer;
@@ -42,7 +41,7 @@ public class ConnectionFactory {
         if (settings == null)
             throw new JCoClientCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        return clients.computeIfAbsent(settings.getUniqueKey(Connections.CLIENT), key -> new DefaultJCoClient(settings));
+        return clients.computeIfAbsent(clientName, key -> new DefaultJCoClient(settings));
     }
 
 
@@ -77,7 +76,7 @@ public class ConnectionFactory {
         if (settings == null)
             throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
 
-        return servers.computeIfAbsent(settings.getUniqueKey(Connections.SERVER), key -> new DefaultJCoServer(settings));
+        return servers.computeIfAbsent(serverName, key -> new DefaultJCoServer(settings));
     }
 
 
