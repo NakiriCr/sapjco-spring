@@ -51,22 +51,6 @@ public class ConnectionFactory {
 
 
     /**
-     * Get or create a new {@link JCoClient} using the given {@link JCoSettings}
-     * @param clientName The {@literal clientName} to be used to cache.
-     * @param settings The {@link JCoSettings} to be used.
-     * @return A new {@link JCoClient}
-     */
-    public static JCoClient getOrCreateClient(String clientName, JCoSettings settings) {
-        if (clientName == null || "".equals(clientName))
-            throw new JCoClientCreatedOnErrorSemaphore("Could not find client name.");
-        if (settings == null)
-            throw new JCoClientCreatedOnErrorSemaphore("Could not find jco settings.");
-
-        return clients.computeIfAbsent(clientName, key -> new DefaultJCoClient(settings));
-    }
-
-
-    /**
      * Get a {@link JCoClient} using the given {@literal clientName}
      * @param clientName The {@literal clientName} to be used to matching.
      * @return  A cache {@link JCoClient}
@@ -103,22 +87,6 @@ public class ConnectionFactory {
                         "Server: [" + key + "] is existed. Not allow the same server name to create.");
             return new DefaultJCoServer(settings);
         });
-    }
-
-
-    /**
-     * Get or create a new {@link JCoServer} using the given {@link JCoSettings}
-     * @param serverName The {@literal serverName} to be used to cache.
-     * @param settings The {@link JCoSettings} to be used.
-     * @return A new {@link JCoServer}
-     */
-    public static JCoServer getOrCreateServer(String serverName, JCoSettings settings) {
-        if (serverName == null || "".equals(serverName))
-            throw new JCoServerCreatedOnErrorSemaphore("Could not find server name.");
-        if (settings == null)
-            throw new JCoServerCreatedOnErrorSemaphore("Could not find jco settings.");
-
-        return servers.computeIfAbsent(serverName, key -> new DefaultJCoServer(settings));
     }
 
 
