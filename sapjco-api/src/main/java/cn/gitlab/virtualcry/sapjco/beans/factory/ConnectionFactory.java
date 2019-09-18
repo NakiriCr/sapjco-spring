@@ -173,7 +173,7 @@ public class ConnectionFactory {
     /**
      * Release servers' connection.
      */
-    public static void releaseServer() {
+    public static void releaseServers() {
         servers.values().forEach(JCoServer::release);
         servers.clear();
     }
