@@ -118,5 +118,4 @@ public class ConnectionFactory {
         Optional.ofNullable(servers.remove(serverName))
                 .ifPresent(JCoServer::release);
     }
-
 }

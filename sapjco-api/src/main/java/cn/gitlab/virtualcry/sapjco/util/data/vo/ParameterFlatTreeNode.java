@@ -12,11 +12,8 @@ import java.io.Serializable;
 @Builder
 public class ParameterFlatTreeNode implements Serializable {
 
-    private int level;
-
-    private String nodeName;
-
-    private String parentNodeName;
-
-    private Parameter nodeInfo;
+    private int                             level;
+    private String                          nodeName;
+    private String                          parentNodeName;
+    private Parameter                       nodeInfo;
 }

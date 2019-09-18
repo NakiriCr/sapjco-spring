@@ -17,6 +17,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ParameterNestTree extends Parameter implements ParameterTree {
 
-    private List<ParameterNestTree>                     children;
-
+    private List<ParameterNestTree>         children;
 }

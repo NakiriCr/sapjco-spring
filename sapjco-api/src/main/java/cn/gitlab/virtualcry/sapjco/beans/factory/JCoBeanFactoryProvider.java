@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  */
 public class JCoBeanFactoryProvider {
 
-    private JCoBeanFactory                              beanFactory;
+    private JCoBeanFactory                  beanFactory;
 
     private static class JCoBeanFactoryProviderInstance {
         private static final JCoBeanFactoryProvider INSTANCE = new JCoBeanFactoryProvider();

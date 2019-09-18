@@ -19,7 +19,7 @@ import static cn.gitlab.virtualcry.sapjco.config.Connections.CLIENT;
 @Slf4j
 public class DefaultJCoClient implements JCoClient {
 
-    private final JCoSettings                           settings;
+    private final JCoSettings               settings;
 
     public DefaultJCoClient(JCoSettings settings) {
         this.settings = settings;
@@ -124,5 +124,4 @@ public class DefaultJCoClient implements JCoClient {
             super(function);
         }
     }
-
 }

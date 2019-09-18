@@ -10,7 +10,7 @@ import com.sap.conn.jco.JCoFunctionTemplate;
 public interface DynamicFunctionHandler {
 
     /**
-     * Register sap function.
+     * Register sap rfc function.
      * @return The definition of SAP RFC function.
      */
     JCoFunctionTemplate registerSapFunc();

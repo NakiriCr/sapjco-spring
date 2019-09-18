@@ -17,19 +17,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Parameter implements Serializable {
 
-    private String name;
-
-    private String description;
-
-    private String type;
-
-    private int length;
-
-    private int byteLength;
-
-    private int unicodeByteLength;
-
-    private int decimals;
+    private String                      name;
+    private String                      description;
+    private String                      type;
+    private int                         length;
+    private int                         byteLength;
+    private int                         unicodeByteLength;
+    private int                         decimals;
 
     @Override
     public boolean equals(Object obj) {

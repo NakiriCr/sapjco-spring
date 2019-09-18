@@ -1,9 +1,9 @@
 package cn.gitlab.virtualcry.sapjco.spring.beans.factory;
 
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactory;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,10 +13,14 @@ import java.util.stream.Collectors;
 /**
  * SpringJCoExtensionFactory
  */
-@AllArgsConstructor
 public class SpringJCoExtensionFactory implements JCoBeanFactory {
 
-    private final ApplicationContext                    ctx;
+    private final ApplicationContext            ctx;
+
+    public SpringJCoExtensionFactory(ApplicationContext ctx) {
+        Assert.notNull(ctx, "ApplicationContext could not be null.");
+        this.ctx = ctx;
+    }
 
 
     @Override
