@@ -1,5 +1,7 @@
 package cn.gitlab.virtualcry.sapjco.util.data.trait;
 
+import cn.gitlab.virtualcry.sapjco.data.annotation.JCoFieldName;
+import cn.gitlab.virtualcry.sapjco.util.ReflectionUtils;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.Parameter;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTree;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTreeNode;
@@ -10,11 +12,11 @@ import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoMetaData;
 import com.sap.conn.jco.JCoStructure;
 import com.sap.conn.jco.JCoTable;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiFunction;
 
 /**
  * JCo data operation utils:
@@ -58,28 +60,24 @@ public abstract class JCoDataAbstractUtils {
      * @param field field
      * @param parameter parameter
      */
-    public static void setJCoFieldValue(JCoField field, Map<String, Object> parameter) {
+    public static void setJCoFieldValue(JCoField field, Object parameter) {
         if (parameter == null)
             return;
-        Object currentParameter = parameter.get(field.getName());
+        Object currentParameter = readPropertyValueFunc.apply(parameter, field);
         if (currentParameter == null)
             return;
         if (field.getType() == JCoMetaData.TYPE_TABLE ) {
-            @SuppressWarnings("unchecked") List<Map<String, Object>> currentParameterList =
-                    (List<Map<String, Object>>) currentParameter;
+            Collection<?> currentParameterList = transferToCollectionValueFunc.apply(currentParameter, field);
             JCoTable table = field.getTable();
             table.clear();
-            for (int i = 0; i < currentParameterList.size(); i++) {
-                final Map<String, Object> currentParameterRow = currentParameterList.get(i);
+            currentParameterList.forEach(currentParameterRow -> {
                 table.appendRow();
                 table.forEach(tableField -> setJCoFieldValue(tableField, currentParameterRow));
-            }
+            });
         }
         else if (field.getType() == JCoMetaData.TYPE_STRUCTURE) {
-            @SuppressWarnings("unchecked") Map<String, Object> currentParameterRow =
-                    (Map<String, Object>) currentParameter;
             JCoStructure structure = field.getStructure();
-            structure.forEach(structureField -> setJCoFieldValue(structureField, currentParameterRow));
+            structure.forEach(structureField -> setJCoFieldValue(structureField, currentParameter));
         }
         else {
             field.setValue(currentParameter);
@@ -225,4 +223,54 @@ public abstract class JCoDataAbstractUtils {
         return nestTree;
     }
 
+
+    /* ============================================================================================================= */
+
+    /**
+     * Read object value by {@link JCoField}.
+     */
+    private static final BiFunction<Object, JCoField, Object> readPropertyValueFunc = (parameter, jCoField) -> {
+        final ObjectContainer<Object> parameterValueContainer = new ObjectContainer<>();
+        final String fieldName = jCoField.getName();
+        if (parameter instanceof Map) {
+            Object parameterValue = ((Map) parameter).get(fieldName);
+            parameterValueContainer.setObject(parameterValue);
+        }
+        else {
+            ReflectionUtils.FieldCallback callback = field -> {
+                Object parameterValue = ReflectionUtils.getField(field, parameter);
+                parameterValueContainer.setObject(parameterValue);
+            };
+            ReflectionUtils.FieldFilter filter = field -> {
+                ReflectionUtils.makeAccessible(field);
+                JCoFieldName annotation = field.getAnnotation(JCoFieldName.class);
+                return field.getName().equals(fieldName) || (annotation != null && annotation.value().equals(fieldName));
+            };
+            ReflectionUtils.doWithFields(parameter.getClass(), callback, filter);
+        }
+        return parameterValueContainer.getObject();
+    };
+
+    /**
+     * Transfer type {@link Object} to type {@link Collection}.
+     */
+    private static final BiFunction<Object, JCoField, Collection<?>> transferToCollectionValueFunc = (parameter, jCoField) -> {
+        Collection<?> parameterList;
+        if (parameter instanceof Object[]) {
+            parameterList =  Arrays.asList((Object[]) parameter);
+        }
+        else if (parameter instanceof Collection) {
+            parameterList = (Collection<?>) parameter;
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "Value in field: [" + jCoField.getName() + "] should be an array or a collection.");
+        }
+        return parameterList;
+    };
+
+    @Getter @Setter
+    private static final class ObjectContainer<T> {
+        private T object;
+    }
 }

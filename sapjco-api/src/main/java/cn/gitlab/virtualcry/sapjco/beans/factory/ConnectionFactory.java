@@ -63,6 +63,19 @@ public class ConnectionFactory {
 
 
     /**
+     * Get or create a new {@link JCoClient} using the given {@link JCoSettings}
+     * @param clientName The {@literal clientName} to be used to cache.
+     * @param settings The {@link JCoSettings} to be used.
+     * @return A new {@link JCoClient}
+     */
+    public static JCoClient getOrCreateClient(String clientName, JCoSettings settings) {
+        return Optional
+                .ofNullable(getClient(clientName))
+                .orElseGet(() -> createClient(clientName, settings));
+    }
+
+
+    /**
      * Get all cache {@link JCoClient}s
      * @return All cache {@link JCoClient}s
      */
@@ -108,6 +121,19 @@ public class ConnectionFactory {
      */
     public static JCoServer getServer(String serverName) {
         return servers.get(serverName);
+    }
+
+
+    /**
+     * Get or create a new {@link JCoServer} using the given {@link JCoSettings}
+     * @param serverName The {@literal serverName} to be used to cache.
+     * @param settings The {@link JCoSettings} to be used.
+     * @return A new {@link JCoServer}
+     */
+    public static JCoServer getOrCreateServer(String serverName, JCoSettings settings) {
+        return Optional
+                .ofNullable(getServer(serverName))
+                .orElseGet(() -> createServer(serverName, settings));
     }
 
 
