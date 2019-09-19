@@ -3,6 +3,7 @@ package cn.gitlab.virtualcry.sapjco.util.data;
 import cn.gitlab.virtualcry.sapjco.util.data.trait.JCoDataAbstractUtils;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTree;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterNestTree;
+import com.alibaba.fastjson.JSON;
 import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoFieldIterator;
 import com.sap.conn.jco.JCoParameterList;
@@ -22,11 +23,22 @@ public class JCoDataUtils extends JCoDataAbstractUtils {
     /**
      * Get JCoParameterList value.
      * @param parameterList parameterList
+     * @param parameterListType parameter type.
+     */
+    public static <T> T getJCoParameterListValue(JCoParameterList parameterList, Class<T> parameterListType) {
+        if (parameterListType == null)
+            throw new IllegalArgumentException("Parameter type could not be null.");
+        Map<String, Object> parameterListValue = getJCoParameterListValue(parameterList);
+       return JSON.parseObject(JSON.toJSONString(parameterListValue), parameterListType);
+    }
+
+    /**
+     * Get JCoParameterList value.
+     * @param parameterList parameterList
      */
     public static Map<String, Object> getJCoParameterListValue(JCoParameterList parameterList) {
-        if (parameterList == null) {
+        if (parameterList == null)
             return new HashMap<>();
-        }
         else {
             Map<String, Object> parameterListValue = new HashMap<>();
             JCoFieldIterator fieldIterator = parameterList.getFieldIterator();
@@ -46,12 +58,12 @@ public class JCoDataUtils extends JCoDataAbstractUtils {
      * @param parameterList parameterList
      * @param parameter parameter
      */
-    public static void setJCoParameterListValue(JCoParameterList parameterList, Map<String, Object> parameter) {
-        if (parameterList != null) {
-            JCoFieldIterator fieldIterator = parameterList.getFieldIterator();
-            while (fieldIterator.hasNextField()) {
-                setJCoFieldValue(fieldIterator.nextField(), parameter);
-            }
+    public static void setJCoParameterListValue(JCoParameterList parameterList, Object parameter) {
+        if (parameterList == null || parameter == null)
+            return;
+        JCoFieldIterator fieldIterator = parameterList.getFieldIterator();
+        while (fieldIterator.hasNextField()) {
+            setJCoFieldValue(fieldIterator.nextField(), parameter);
         }
     }
 
