@@ -1,6 +1,8 @@
 package cn.gitlab.virtualcry.sapjco.spring.beans.factory;
 
 import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactory;
+import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
@@ -11,17 +13,26 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * SpringJCoExtensionFactory
+ * Extension for {@link JCoBeanFactory}, implementation of Spring.
+ * Instances will be automatically registered to {@link JCoBeanFactoryProvider}.
+ *
+ * @author VirtualCry
  */
-public class SpringJCoExtensionFactory implements JCoBeanFactory {
+public class SpringExtensionJCoBeanFactory
+        implements JCoBeanFactory, InitializingBean {
 
     private final ApplicationContext            ctx;
 
-    public SpringJCoExtensionFactory(ApplicationContext ctx) {
+    public SpringExtensionJCoBeanFactory(ApplicationContext ctx) {
         Assert.notNull(ctx, "ApplicationContext could not be null.");
         this.ctx = ctx;
     }
 
+
+    @Override
+    public void afterPropertiesSet() {
+        JCoBeanFactoryProvider.getSingleton().register(this);   // register in provider.
+    }
 
     @Override
     public <T> void register(String beanName, T bean) {

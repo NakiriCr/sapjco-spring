@@ -3,9 +3,7 @@ package cn.gitlab.virtualcry.sapjco.data.annotation;
 import java.lang.annotation.*;
 
 /**
- * Indicates that an annotated class is a "JCoBean".
- * Such classes are considered as candidates for auto-detection
- * when using annotation-based configuration and classpath scanning.
+ * Indicates that the annotated field is an alias for the BAPI field.
  *
  * @author VirtualCry
  */
@@ -15,9 +13,8 @@ import java.lang.annotation.*;
 public @interface JCoFieldName {
 
     /**
-     * The value may indicate a suggestion for a logical component name,
-     * to be turned into a Spring bean in case of an autodetected component.
-     * @return the suggested component name, if any
+     * The value may indicate a suggestion for a BAPI field name,
+     * @return the suggested jco field name, if any
      */
     String value() default "";
 }
