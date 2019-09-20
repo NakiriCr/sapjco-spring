@@ -1,11 +1,11 @@
 package cn.gitlab.virtualcry.sapjco.spring.context;
 
-import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoErrorListener;
 import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoExceptionListener;
 import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoStateChangedListener;
-import cn.gitlab.virtualcry.sapjco.spring.beans.factory.SpringJCoExtensionFactory;
+import cn.gitlab.virtualcry.sapjco.spring.beans.factory.SpringExtensionJCoBeanFactory;
+import cn.gitlab.virtualcry.sapjco.spring.beans.factory.SpringExtensionJCoConnectionFactory;
 import cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation.JCoAnnotationBeanPostProcessor;
 import cn.gitlab.virtualcry.sapjco.spring.util.BeanRegistrar;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,13 @@ import org.springframework.core.PriorityOrdered;
 public class JCoApplicationContextInitializer
         implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    public static final String BEAN_NAME = "cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation."
+    public static final String JCO_BEAN_FACTORY_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation."
+            + "internalSpringExtensionJCoBeanFactory";
+
+    public static final String JCO_CONNECTION_FACTORY_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation."
+            + "internalSpringExtensionJCoConnectionFactory";
+
+    public static final String JCO_ANNOTATION_PROCESSOR_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.spring.beans.factory.annotation."
             + "internalJCoAnnotationBeanPostProcessor";
 
     public static final String ERROR_LISTENER_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.server.listener."
@@ -47,10 +53,6 @@ public class JCoApplicationContextInitializer
 
         // register provider
         JCoDataProvider.registerInEnvironment();
-
-        // register jco factory
-        JCoBeanFactoryProvider.getSingleton().register(
-                new SpringJCoExtensionFactory(applicationContext));
 
         // add processor
         applicationContext.addBeanFactoryPostProcessor(
@@ -73,16 +75,26 @@ public class JCoApplicationContextInitializer
         @Override
         public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
                 throws BeansException {
+
             // register processor
             BeanRegistrar.registerInfrastructureBean(
-                    registry, BEAN_NAME, JCoAnnotationBeanPostProcessor.class);
+                    registry, JCO_ANNOTATION_PROCESSOR_BEAN_NAME, JCoAnnotationBeanPostProcessor.class);
+
+            // register jco factory
+            registerDefaultJCoFactories(registry);
 
             // register default beans
-            registerDefaultListeners(registry);
+            registerDefaultJCoListeners(registry);
         }
 
-        private void registerDefaultListeners(BeanDefinitionRegistry registry) {
+        private void registerDefaultJCoFactories(BeanDefinitionRegistry registry) {
+            BeanRegistrar.registerInfrastructureBean(
+                    registry, JCO_BEAN_FACTORY_BEAN_NAME, SpringExtensionJCoBeanFactory.class);
+            BeanRegistrar.registerInfrastructureBean(
+                    registry, JCO_CONNECTION_FACTORY_BEAN_NAME, SpringExtensionJCoConnectionFactory.class);
+        }
 
+        private void registerDefaultJCoListeners(BeanDefinitionRegistry registry) {
             BeanRegistrar.registerInfrastructureBean(
                     registry, ERROR_LISTENER_BEAN_NAME, DefaultJCoErrorListener.class);
             BeanRegistrar.registerInfrastructureBean(
