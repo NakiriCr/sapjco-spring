@@ -7,13 +7,13 @@ package cn.gitlab.virtualcry.sapjco.beans.factory;
  */
 public class JCoConnectionFactoryProvider extends Provider<JCoConnectionFactory> {
 
-    private static class JCoBeanFactoryProviderInstance {
+    private static class JCoConnectionFactoryProviderInstance {
         private static final JCoConnectionFactoryProvider INSTANCE = new JCoConnectionFactoryProvider();
     }
 
     private JCoConnectionFactoryProvider() { }
 
     public static JCoConnectionFactoryProvider getSingleton() {  // singleton
-        return JCoBeanFactoryProviderInstance.INSTANCE;
+        return JCoConnectionFactoryProviderInstance.INSTANCE;
     }
 }
