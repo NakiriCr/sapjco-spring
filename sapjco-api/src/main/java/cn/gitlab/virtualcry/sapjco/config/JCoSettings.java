@@ -1,9 +1,7 @@
 package cn.gitlab.virtualcry.sapjco.config;
 
 import cn.gitlab.virtualcry.sapjco.util.key.KeyGenerator;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,7 +10,11 @@ import java.io.Serializable;
  *
  * @author VirtualCry
  */
-@Data
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class JCoSettings implements Serializable {
 
     /* =============================== Start Connect Config. ============================ */
