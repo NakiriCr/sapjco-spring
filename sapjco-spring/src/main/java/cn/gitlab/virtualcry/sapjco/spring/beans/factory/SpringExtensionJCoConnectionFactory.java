@@ -11,7 +11,8 @@ import org.springframework.beans.factory.InitializingBean;
  *
  * @author VirtualCry
  */
-public class SpringExtensionJCoConnectionFactory extends DefaultJCoConnectionFactory implements InitializingBean {
+public class SpringExtensionJCoConnectionFactory
+        extends DefaultJCoConnectionFactory implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {

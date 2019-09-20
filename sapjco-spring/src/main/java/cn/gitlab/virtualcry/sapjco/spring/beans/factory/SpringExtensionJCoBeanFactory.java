@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
  *
  * @author VirtualCry
  */
-public class SpringExtensionJCoBeanFactory implements JCoBeanFactory, InitializingBean {
+public class SpringExtensionJCoBeanFactory
+        implements JCoBeanFactory, InitializingBean {
 
     private final ApplicationContext            ctx;
 
