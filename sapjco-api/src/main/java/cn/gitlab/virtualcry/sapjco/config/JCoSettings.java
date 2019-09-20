@@ -19,44 +19,24 @@ public class JCoSettings implements Serializable {
 
     /* =============================== Start Connect Config. ============================ */
 
-    // server address
-    private String ashost           = "127.0.0.1";
-
-    // system number
-    private String sysnr            = "00";
-
-    // system environment
-    private String client           = "800";
-
-    // user
-    private String user             = "";
-    // password
-    private String password         = "";
-
-    // language
-    private String language         = "ZH";
-
-    // max connections
-    private String poolCapacity     = "20";
-
-    // max connection threads
-    private String peakLimit        = "10";
+    @Builder.Default private String ashost      = "127.0.0.1";  // server address
+    @Builder.Default private String sysnr       = "00";         // system number
+    @Builder.Default private String client      = "800";        // system environment
+    @Builder.Default private String user        = "";           // user
+    @Builder.Default private String password    = "";           // password
+    @Builder.Default private String language    = "ZH";         // language
+    @Builder.Default private String poolCapacity = "20";        // max connections
+    @Builder.Default private String peakLimit    = "10";        // max connection threads
 
     /* ================================ End Connect Config. ============================= */
 
 
     /* ================================ Start Server Config. ============================ */
 
-    // gateway host
-    private String gatewayHost      = "127.0.0.1";
-
-    // gateway service
-    private String gatewayService   = "sapgw00";
-
-    // must same with SM59's programId
-    private String programId        = "JAVA_JCO";
-
-    private String connectionCount  = "20";
+    @Builder.Default private String gatewayHost = "127.0.0.1";      // gateway host
+    @Builder.Default private String programId   = "JAVA_JCO";       // must same with SM59's programId
+    @Builder.Default private String gatewayService  = "sapgw00";    // gateway service
+    @Builder.Default private String connectionCount = "20";
 
     /* ================================= End Server Config. ============================= */
 
