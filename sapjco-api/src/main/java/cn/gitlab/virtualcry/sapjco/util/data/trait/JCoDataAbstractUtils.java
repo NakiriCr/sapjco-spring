@@ -1,11 +1,11 @@
 package cn.gitlab.virtualcry.sapjco.util.data.trait;
 
+import cn.gitlab.virtualcry.sapjco.data.annotation.JCoFieldName;
 import cn.gitlab.virtualcry.sapjco.util.ReflectionUtils;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.Parameter;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTree;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTreeNode;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterNestTree;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.sap.conn.jco.JCoField;
@@ -243,8 +243,8 @@ public abstract class JCoDataAbstractUtils {
             };
             ReflectionUtils.FieldFilter filter = field -> {
                 ReflectionUtils.makeAccessible(field);
-                JSONField annotation = field.getAnnotation(JSONField.class);
-                return field.getName().equals(fieldName) || (annotation != null && annotation.name().equals(fieldName));
+                JCoFieldName annotation = field.getAnnotation(JCoFieldName.class);
+                return field.getName().equals(fieldName) || (annotation != null && annotation.value().equals(fieldName));
             };
             ReflectionUtils.doWithFields(parameter.getClass(), callback, filter);
         }
