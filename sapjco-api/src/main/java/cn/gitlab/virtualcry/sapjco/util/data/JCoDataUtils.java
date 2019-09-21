@@ -3,7 +3,7 @@ package cn.gitlab.virtualcry.sapjco.util.data;
 import cn.gitlab.virtualcry.sapjco.util.data.trait.JCoDataAbstractUtils;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterFlatTree;
 import cn.gitlab.virtualcry.sapjco.util.data.vo.ParameterNestTree;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.util.TypeUtils;
 import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoFieldIterator;
 import com.sap.conn.jco.JCoParameterList;
@@ -29,7 +29,7 @@ public class JCoDataUtils extends JCoDataAbstractUtils {
         if (parameterListType == null)
             throw new IllegalArgumentException("Parameter type could not be null.");
         Map<String, Object> parameterListValue = getJCoParameterListValue(parameterList);
-       return JSON.parseObject(JSON.toJSONString(parameterListValue), parameterListType);
+        return TypeUtils.castToJavaBean(parameterListValue, parameterListType);
     }
 
     /**
