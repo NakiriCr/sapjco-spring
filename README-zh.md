@@ -10,7 +10,7 @@
 ## 简介
 Sapjco-Spring帮助您更容易使用SAP JAVA连接器，让您更快更好地掌握`SAPJCO`中间件。
 Sapjco-Spring内对SAPJCO的复杂API进行再封装，
-提供更简单的API来创建`RFC服务端`、`RFC客户端`、添加`服务端监听器`、`RFC函数调用`、`BAPI数据结构解析`。
+提供更简单的API来`创建RFC服务端和客户端`、`添加服务端监听器`、`调用RFC函数`、`解析BAPI数据结构`。
 
 
 ## 如何使用

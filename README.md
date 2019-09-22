@@ -10,7 +10,7 @@
 ## Introduction
 Sapjco-Spring helps you to use SAP JAVA connectors more easily, allowing you to master `SAPJCO` middleware faster and better. 
 SAPJCO's complex APIs are re-encapsulated in Sapjco-Spring to provide simpler APIs to 
-create `RFC server`, `RFC client`, add `server listener`, `RFC function call`, `BAPI data structure parsing`.
+`create RFC server and client`, `add server listener`, `call RFC function`, `parse BAPI data structure`.
 
 ## How to Use
 * [See the docs](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/How-to-Use.en "See the docs") 
