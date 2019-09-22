@@ -1,19 +1,21 @@
 # Sapjco integration with Spring
 
+**README: [English](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/blob/master/README.md) | [中文](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/blob/master/README-zh.md)**
+
 ![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?color=green)
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.virtualcry/sapjco-spring.svg)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/snapshots/https/oss.sonatype.org/com.github.virtualcry/sapjco-spring.svg)
 
 
 ## Introduction
-Sapjco-Spring help you use SAP Java Connector easier. Familiarize and master the `JCOSAP` middleware faster and better. It provides some simple API to start `RFC server`, 
-add listeners, add function handlers, and create `RFC client` to invoke sap function.
-
+Sapjco-Spring helps you to use SAP JAVA connectors more easily, allowing you to master `SAPJCO` middleware faster and better. 
+SAPJCO's complex APIs are re-encapsulated in Sapjco-Spring to provide simpler APIs to 
+create `RFC server`, `RFC client`, add `server listener`, `RFC function call`, `BAPI data structure parsing`.
 
 ## How to Use
-* [See the docs](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/How-to-Use "See the docs") 
+* [See the docs](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/How-to-Use.en "See the docs") 
       
       
 ## Quick Start
-* [See the wiki page](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/Quick-Start "See the wiki page") 
+* [See the wiki page](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/Quick-Start.en "See the wiki page") 
 
