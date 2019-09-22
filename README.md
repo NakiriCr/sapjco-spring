@@ -11,9 +11,9 @@ add listeners, add function handlers, and create `RFC client` to invoke sap func
 
 
 ## How to Use
-* [See the docs](https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring/wikis/How-to-Use "See the docs") 
+* [See the docs](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/How-to-Use "See the docs") 
       
       
 ## Quick Start
-* [See the wiki page](https://gitlab.yanzx-dev.cn/VirtualCry/sapjco-spring/wikis/Quick-Start "See the wiki page") 
+* [See the wiki page](https://gitlab.yanzx-dev.cn/sapjco/sapjco-spring/wikis/Quick-Start "See the wiki page") 
 
