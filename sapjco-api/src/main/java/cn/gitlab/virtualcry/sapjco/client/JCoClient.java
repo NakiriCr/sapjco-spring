@@ -6,6 +6,8 @@ import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoFunction;
 
+import java.util.Map;
+
 /**
  *  Client using RFC protocol for communicating with SAP system, client could be used for
  *  viewing sap function definition, or invoking sap RFC function.
@@ -55,4 +57,26 @@ public interface JCoClient extends AutoCloseable {
     void invokeSapFunc(String functionName,
                        FunctionRequestHandler requestHandler,
                        FunctionResponseHandler responseHandler);
+
+    /**
+     * Invoke sap function.
+     * @param functionName The {@literal functionName}
+     *                     to be used for matching sap function.
+     * @param requestHandler The {@link FunctionRequestHandler}
+     *                       to be used for doing somethings before request.
+     * @return The {@literal invoke result}.
+     */
+    Map<String, Object> invokeSapFunc(String functionName,
+                                      FunctionRequestHandler requestHandler);
+
+    /**
+     * Invoke sap function.
+     * @param functionName The {@literal functionName}
+     *                     to be used for matching sap function.
+     * @param requestHandler The {@link FunctionRequestHandler}
+     *                       to be used for doing somethings before request.
+     * @return The {@literal invoke result}.
+     */
+    <T> T invokeSapFunc(String functionName,
+                                      FunctionRequestHandler requestHandler, Class<T> resultType);
 }

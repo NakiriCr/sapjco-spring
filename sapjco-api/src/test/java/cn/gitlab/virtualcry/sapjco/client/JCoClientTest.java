@@ -7,7 +7,6 @@ import cn.gitlab.virtualcry.sapjco.beans.factory.JCoConnectionFactoryProvider;
 import cn.gitlab.virtualcry.sapjco.client.function.zmm_shp_getdnhb.DnHeader;
 import cn.gitlab.virtualcry.sapjco.client.function.zmm_shp_getdnhb.TableParameter;
 import cn.gitlab.virtualcry.sapjco.client.handler.FunctionRequestHandler;
-import cn.gitlab.virtualcry.sapjco.client.handler.FunctionResponseHandler;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.util.data.JCoDataUtils;
@@ -16,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -61,11 +59,9 @@ public class JCoClientTest {
                     .build();
             JCoDataUtils.setJCoParameterListValue(tableParameter, tableParameterValue);
         };
-        FunctionResponseHandler responseHandler = response -> {
-            Map<String, Object> invokeResult = new HashMap<>();
-            response.forEach(jCoField -> invokeResult.put(jCoField.getName(), JCoDataUtils.getJCoFieldValue(jCoField)));
-            System.out.println(JSON.toJSONString(invokeResult));
-        };
-        client.invokeSapFunc(functionName, requestHandler, responseHandler);
+        Map<String, Object> invokeResult = client.invokeSapFunc(functionName, requestHandler);
+        TableParameter invokeResultForJavaBean = client.invokeSapFunc(functionName, requestHandler, TableParameter.class);
+        System.out.println(JSON.toJSONString(invokeResult));
+        System.out.println(JSON.toJSONString(invokeResultForJavaBean));
     }
 }
