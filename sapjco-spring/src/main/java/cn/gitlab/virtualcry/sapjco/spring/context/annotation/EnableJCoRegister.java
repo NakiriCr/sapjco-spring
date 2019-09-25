@@ -1,23 +1,22 @@
 package cn.gitlab.virtualcry.sapjco.spring.context.annotation;
 
-import cn.gitlab.virtualcry.sapjco.spring.context.JCoApplicationContextInitializer;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
+import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
+import cn.gitlab.virtualcry.sapjco.spring.context.JCoApplicationContextInitializer.JCoComponentScanRegistrar;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Import;
 
 /**
  * EnableJCoRegister
  */
-public class EnableJCoRegister implements ApplicationContextAware {
+@Import(JCoComponentScanRegistrar.class)
+@Slf4j
+public class EnableJCoRegister {
 
-    private final ApplicationContextInitializer<ConfigurableApplicationContext> initializer =
-            new JCoApplicationContextInitializer();
+    public EnableJCoRegister() {
+        if (log.isInfoEnabled())
+            log.info("Initializing SAP Java Connector");
 
-
-    @Override
-    public void setApplicationContext(ApplicationContext ctx) throws BeansException {
-        initializer.initialize((ConfigurableApplicationContext) ctx);
+        // register provider
+        JCoDataProvider.registerInEnvironment();
     }
 }

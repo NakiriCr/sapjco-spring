@@ -59,7 +59,7 @@ public class JCoApplicationContextInitializer
                 new JCoComponentScanRegistrar());
     }
 
-    private static class JCoComponentScanRegistrar
+    public static class JCoComponentScanRegistrar
             implements BeanDefinitionRegistryPostProcessor, PriorityOrdered {
 
         @Override

@@ -1,16 +1,19 @@
 package cn.gitlab.virtualcry.sapjco.client;
 
-import cn.gitlab.virtualcry.sapjco.beans.factory.*;
+import cn.gitlab.virtualcry.sapjco.beans.factory.JCoConnectionFactory;
 import cn.gitlab.virtualcry.sapjco.client.function.zmm_shp_getdnhb.DnHeader;
 import cn.gitlab.virtualcry.sapjco.client.function.zmm_shp_getdnhb.TableParameter;
 import cn.gitlab.virtualcry.sapjco.client.handler.FunctionRequestHandler;
-import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.util.data.JCoDataUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Map;
 
@@ -19,21 +22,12 @@ import java.util.Map;
  *
  * @author VirtualCry
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class JCoClientTest {
 
-    static {
-        JCoDataProvider.registerInEnvironment();
-        JCoBeanFactoryProvider.getSingleton()
-                .register(new DefaultJCoBeanFactory());
-        JCoConnectionFactoryProvider.getSingleton()
-                .register(new DefaultJCoConnectionFactory());
-    }
-
-    private final JCoConnectionFactory connectionFactory;
-
-    public JCoClientTest() {
-        this.connectionFactory = JCoConnectionFactoryProvider.getSingleton().getIfAvailable();
-    }
+    @Resource
+    private JCoConnectionFactory connectionFactory;
 
     @Before
     public void initialize() {

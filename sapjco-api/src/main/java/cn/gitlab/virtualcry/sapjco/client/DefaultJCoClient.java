@@ -6,8 +6,13 @@ import cn.gitlab.virtualcry.sapjco.client.semaphore.JCoClientCreatedOnErrorSemap
 import cn.gitlab.virtualcry.sapjco.client.semaphore.JCoClientInvokeOnErrorSemaphore;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
+import cn.gitlab.virtualcry.sapjco.util.data.JCoDataUtils;
+import com.alibaba.fastjson.util.TypeUtils;
 import com.sap.conn.jco.*;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static cn.gitlab.virtualcry.sapjco.config.Connections.CLIENT;
 
@@ -92,6 +97,22 @@ public class DefaultJCoClient implements JCoClient {
             throw new JCoClientInvokeOnErrorSemaphore("Fail to invoke sap function: [" + functionName + "]", ex); }
     }
 
+    @Override
+    public Map<String, Object> invokeSapFunc(String functionName, FunctionRequestHandler requestHandler) {
+        Map<String, Object> invokeResult = new HashMap<>();
+        FunctionResponseHandler responseHandler = response -> response
+                .forEach(jCoField ->
+                        invokeResult.put(jCoField.getName(), JCoDataUtils.getJCoFieldValue(jCoField))
+                );
+        this.invokeSapFunc(functionName, requestHandler, responseHandler);
+        return invokeResult;
+    }
+
+    @Override
+    public <T> T invokeSapFunc(String functionName, FunctionRequestHandler requestHandler, Class<T> resultType) {
+        Map<String, Object> invokeResult = this.invokeSapFunc(functionName, requestHandler);
+        return TypeUtils.castToJavaBean(invokeResult, resultType);
+    }
 
     /* ============================================================================================================= */
 

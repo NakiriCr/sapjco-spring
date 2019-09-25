@@ -1,14 +1,12 @@
 package cn.gitlab.virtualcry.sapjco.server;
 
-import cn.gitlab.virtualcry.sapjco.beans.factory.DefaultJCoBeanFactory;
-import cn.gitlab.virtualcry.sapjco.beans.factory.DefaultJCoConnectionFactory;
-import cn.gitlab.virtualcry.sapjco.beans.factory.JCoBeanFactoryProvider;
-import cn.gitlab.virtualcry.sapjco.beans.factory.JCoConnectionFactoryProvider;
+import cn.gitlab.virtualcry.sapjco.beans.factory.*;
 import cn.gitlab.virtualcry.sapjco.config.JCoDataProvider;
 import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
-import cn.gitlab.virtualcry.sapjco.server.handler.FunctionInvokeHandler;
-import cn.gitlab.virtualcry.sapjco.util.data.JCoDataUtils;
-import com.alibaba.fastjson.JSON;
+import cn.gitlab.virtualcry.sapjco.server.function.generic_handler.GENERIC_FunctionInvokeHandler;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoErrorListener;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoExceptionListener;
+import cn.gitlab.virtualcry.sapjco.server.listener.DefaultJCoStateChangedListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,26 +27,20 @@ public class JCoServerTest {
                 .register(new DefaultJCoConnectionFactory());
     }
 
-    private JCoServer server;
+    private final JCoBeanFactory beanFactory;
+    private final JCoConnectionFactory connectionFactory;
+
+    public JCoServerTest() {
+        this.beanFactory = JCoBeanFactoryProvider.getSingleton().getIfAvailable();
+        this.connectionFactory = JCoConnectionFactoryProvider.getSingleton().getIfAvailable();
+    }
 
     @Before
     public void initialize() {
-        JCoBeanFactoryProvider.getSingleton().getIfAvailable()
-                .register("GENERIC_HANDLER", (FunctionInvokeHandler) (serverCtx, function) -> {
-                    System.out.println(JSON.toJSONString(
-                            JCoDataUtils.getJCoParameterListValue(function.getImportParameterList())
-                    ));
-                    System.out.println(JSON.toJSONString(
-                            JCoDataUtils.getJCoParameterListValue(function.getTableParameterList())
-                    ));
-                    System.out.println(JSON.toJSONString(
-                            JCoDataUtils.getJCoParameterListValue(function.getExportParameterList())
-                    ));
-                    System.out.println(JSON.toJSONString(
-                            JCoDataUtils.getJCoParameterListValue(function.getChangingParameterList())
-                    ));
-                    JCoServerTest.class.notify();
-                });
+        beanFactory.register("GENERIC_HANDLER", new GENERIC_FunctionInvokeHandler());
+        beanFactory.register(DefaultJCoExceptionListener.class.getName(), new DefaultJCoExceptionListener());
+        beanFactory.register(DefaultJCoErrorListener.class.getName(), new DefaultJCoErrorListener());
+        beanFactory.register(DefaultJCoStateChangedListener.class.getName(), new DefaultJCoStateChangedListener());
         JCoSettings settings = JCoSettings.builder()
                 .ashost("192.168.0.51")
                 .sysnr("00")
@@ -62,13 +54,12 @@ public class JCoServerTest {
                 .gatewayService("sapgw00")
                 .programId("JAVA_JCO_SRM")
                 .build();
-        server = JCoConnectionFactoryProvider.getSingleton().getIfAvailable()
-                .createServer("testServer", settings);
+        connectionFactory.createServer("testServer", settings);
     }
 
     @Test
     public void testServer() {
-        server.start();
+        connectionFactory.getServer("testServer").start();
         Semaphore semaphore = new Semaphore(0);
         try {
             semaphore.acquire();
