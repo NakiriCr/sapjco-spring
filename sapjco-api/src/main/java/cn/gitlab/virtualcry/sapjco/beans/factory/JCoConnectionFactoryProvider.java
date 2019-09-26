@@ -4,6 +4,7 @@ package cn.gitlab.virtualcry.sapjco.beans.factory;
  * Provider for {@link JCoConnectionFactory}.
  *
  * @author VirtualCry
+ * @since 3.2.3
  */
 public class JCoConnectionFactoryProvider extends Provider<JCoConnectionFactory> {
 

@@ -65,6 +65,7 @@ public interface JCoClient extends AutoCloseable {
      * @param requestHandler The {@link FunctionRequestHandler}
      *                       to be used for doing somethings before request.
      * @return The {@literal invoke result}.
+     * @since 3.2.4
      */
     Map<String, Object> invokeSapFunc(String functionName,
                                       FunctionRequestHandler requestHandler);
@@ -76,6 +77,7 @@ public interface JCoClient extends AutoCloseable {
      * @param requestHandler The {@link FunctionRequestHandler}
      *                       to be used for doing somethings before request.
      * @return The {@literal invoke result}.
+     * @since 3.2.4
      */
     <T> T invokeSapFunc(String functionName,
                                       FunctionRequestHandler requestHandler, Class<T> resultType);
