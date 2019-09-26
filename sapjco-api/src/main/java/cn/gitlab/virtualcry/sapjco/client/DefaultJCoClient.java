@@ -9,10 +9,13 @@ import cn.gitlab.virtualcry.sapjco.config.JCoSettings;
 import cn.gitlab.virtualcry.sapjco.util.data.JCoDataUtils;
 import com.alibaba.fastjson.util.TypeUtils;
 import com.sap.conn.jco.*;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static cn.gitlab.virtualcry.sapjco.config.Connections.CLIENT;
 
@@ -109,9 +112,51 @@ public class DefaultJCoClient implements JCoClient {
     }
 
     @Override
+    public Map<String, Object> invokeSapFunc(String functionName,
+                                             Object importParameterValue,
+                                             Object tablesParameterValue, Object changingParameterValue) {
+        FunctionRequestHandler requestHandler = setParameterRequestHandlerFunc.apply(InvokeParameter.builder()
+                .importParameterValue(importParameterValue)
+                .tablesParameterValue(tablesParameterValue)
+                .changingParameterValue(changingParameterValue)
+                .build());
+        return this.invokeSapFunc(functionName, requestHandler);
+    }
+
+    @Override
     public <T> T invokeSapFunc(String functionName, FunctionRequestHandler requestHandler, Class<T> resultType) {
         Map<String, Object> invokeResult = this.invokeSapFunc(functionName, requestHandler);
         return TypeUtils.castToJavaBean(invokeResult, resultType);
+    }
+
+    @Override
+    public <T> T invokeSapFunc(String functionName,
+                               Object importParameterValue,
+                               Object tablesParameterValue,
+                               Object changingParameterValue, Class<T> resultType) {
+        FunctionRequestHandler requestHandler = setParameterRequestHandlerFunc.apply(InvokeParameter.builder()
+                .importParameterValue(importParameterValue)
+                .tablesParameterValue(tablesParameterValue)
+                .changingParameterValue(changingParameterValue)
+                .build());
+        return this.invokeSapFunc(functionName, requestHandler, resultType);
+    }
+
+    private Function<InvokeParameter, FunctionRequestHandler> setParameterRequestHandlerFunc = invokeParameter ->
+            (importParameter, tableParameter, changingParameter) -> {
+        if (invokeParameter.getImportParameterValue() != null)
+            JCoDataUtils.setJCoParameterListValue(importParameter, invokeParameter.getImportParameterValue());
+        if (invokeParameter.getTablesParameterValue() != null)
+            JCoDataUtils.setJCoParameterListValue(tableParameter, invokeParameter.getTablesParameterValue());
+        if (invokeParameter.getChangingParameterValue() != null)
+            JCoDataUtils.setJCoParameterListValue(changingParameter, invokeParameter.getChangingParameterValue());
+    };
+
+    @Builder @Getter
+    private static class InvokeParameter {
+        private Object importParameterValue;
+        private Object tablesParameterValue;
+        private Object changingParameterValue;
     }
 
     /* ============================================================================================================= */

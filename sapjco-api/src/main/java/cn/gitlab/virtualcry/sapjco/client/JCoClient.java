@@ -58,6 +58,7 @@ public interface JCoClient extends AutoCloseable {
                        FunctionRequestHandler requestHandler,
                        FunctionResponseHandler responseHandler);
 
+
     /**
      * Invoke sap function.
      * @param functionName The {@literal functionName}
@@ -70,15 +71,54 @@ public interface JCoClient extends AutoCloseable {
     Map<String, Object> invokeSapFunc(String functionName,
                                       FunctionRequestHandler requestHandler);
 
+
+    /**
+     * Invoke sap function.
+     * @param functionName The {@literal functionName}
+     *                     to be used for matching sap function.
+     * @param importParameterValue The {@literal importParameterValue}
+     *                     to be used for setting value to {@literal IMPORT}
+     * @param tablesParameterValue The {@literal tablesParameterValue}
+     *                     to be used for setting value to {@literal TABLES}
+     * @param changingParameterValue The {@literal changingParameterValue}
+     *                     to be used for setting value to {@literal CHANGING}
+     * @return The {@literal invoke result}.
+     * @since 3.2.5
+     */
+    Map<String, Object> invokeSapFunc(String functionName, Object importParameterValue,
+                                      Object tablesParameterValue, Object changingParameterValue);
+
+
     /**
      * Invoke sap function.
      * @param functionName The {@literal functionName}
      *                     to be used for matching sap function.
      * @param requestHandler The {@link FunctionRequestHandler}
      *                       to be used for doing somethings before request.
+     * @param resultType The {@literal resultType}
+     *                     to be used for formatting result.
      * @return The {@literal invoke result}.
      * @since 3.2.4
      */
     <T> T invokeSapFunc(String functionName,
                                       FunctionRequestHandler requestHandler, Class<T> resultType);
+
+
+    /**
+     * Invoke sap function.
+     * @param functionName The {@literal functionName}
+     *                     to be used for matching sap function.
+     * @param importParameterValue The {@literal importParameterValue}
+     *                     to be used for setting value to {@literal IMPORT}
+     * @param tablesParameterValue The {@literal tablesParameterValue}
+     *                     to be used for setting value to {@literal TABLES}
+     * @param changingParameterValue The {@literal changingParameterValue}
+     *                     to be used for setting value to {@literal CHANGING}
+     * @param resultType The {@literal resultType}
+     *                     to be used for formatting result.
+     * @return The {@literal invoke result}.
+     * @since 3.2.5
+     */
+    <T> T invokeSapFunc(String functionName, Object importParameterValue,
+                        Object tablesParameterValue, Object changingParameterValue, Class<T> resultType);
 }
