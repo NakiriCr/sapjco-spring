@@ -1,6 +1,11 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+//skip Test tasks
+gradle.taskGraph.whenReady {
+    tasks.each { task -> task.enabled = !task.name.contains("test") }
+}
+
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
