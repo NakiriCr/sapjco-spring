@@ -19,6 +19,7 @@ import static cn.gitlab.virtualcry.sapjco.config.Connections.SERVER;
  * Default implement of {@link JCoConnectionFactory}
  *
  * @author VirtualCry
+ * @since 3.2.3
  */
 public class DefaultJCoConnectionFactory implements JCoConnectionFactory {
 

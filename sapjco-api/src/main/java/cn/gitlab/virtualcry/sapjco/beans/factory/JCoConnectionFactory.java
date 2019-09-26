@@ -10,6 +10,7 @@ import java.util.Map;
  * RFC connection factory.
  *
  * @author VirtualCry
+ * @since 3.2.3
  */
 public interface JCoConnectionFactory {
 
