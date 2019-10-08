@@ -18,6 +18,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * {@link ApplicationContextInitializer} to register JCo factory and beans
  *
@@ -45,9 +47,13 @@ public class JCoApplicationContextInitializer
     public static final String STATE_CHANGED_LISTENER_BEAN_NAME = "cn.gitlab.virtualcry.sapjco.server.listener."
             + "internalDefaultJCoStateChangedListener";
 
+    private static final AtomicBoolean isInit = new AtomicBoolean(false);
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
+        if (!isInit.compareAndSet(false, true))
+            return;
+
         if (log.isInfoEnabled())
             log.info("Initializing SAP Java Connector");
 
